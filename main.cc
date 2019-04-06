@@ -17,7 +17,8 @@ using namespace std;
 
 static void opt_input(string const &);
 static void opt_output(string const &);
-static void opt_factor(string const &);
+static void opt_compress(string const &);
+static void opt_decompress(string const &);
 static void opt_help(string const &);
 
 // Tabla de opciones de l�nea de comando. El formato de la tabla
@@ -51,12 +52,12 @@ static void opt_help(string const &);
 static option_t options[] = {
 	{1, "i", "input", "-", opt_input, OPT_DEFAULT},
 	{1, "o", "output", "-", opt_output, OPT_DEFAULT},
-	{1, "f", "factor", NULL, opt_factor, OPT_MANDATORY},
+	{0, "c", "compress", NULL, opt_compress, OPT_DEFAULT},
+	{0, "d", "decompress", NULL, opt_decompress, OPT_DEFAULT},
 	{0, "h", "help", NULL, opt_help, OPT_DEFAULT},
 	{0, },
 };
 
-static int factor;
 static istream *iss = 0;	// Input Stream (clase para manejo de los flujos de entrada)
 static ostream *oss = 0;	// Output Stream (clase para manejo de los flujos de salida)
 static fstream ifs; 		// Input File Stream (derivada de la clase ifstream que deriva de istream para el manejo de archivos)
@@ -121,29 +122,23 @@ opt_output(string const &arg)
 }
 
 static void
-opt_factor(string const &arg)
+opt_compress(string const &arg)
 {
-	istringstream iss(arg);
+	//istringstream iss(arg);
 
-	// Intentamos extraer el factor de la l�nea de comandos.
-	// Para detectar argumentos que �nicamente consistan de
-	// n�meros enteros, vamos a verificar que EOF llegue justo
-	// despu�s de la lectura exitosa del escalar.
-	//
-	if (!(iss >> factor)
-	    || !iss.eof()) {
-		cerr << "non-integer factor: "
-		     << arg
-		     << "."
-		     << endl;
-		exit(1);
-	}
+	//Aca van las instrucciones para comprimir
 
-	if (iss.bad()) {
-		cerr << "cannot read integer factor."
-		     << endl;
-		exit(1);
-	}
+	cout << "Comprimiendo" << endl;
+
+}
+
+static void
+opt_decompress(string const &arg)
+{
+
+	//Aca van las instrucciones para descomprimir
+
+	cout << "Descomprimiendo" << endl;
 }
 
 static void
@@ -154,37 +149,9 @@ opt_help(string const &arg)
 	exit(0);
 }
 
-void
-multiply(istream *is, ostream *os)
-{
-	int num;
-
-	while (*is >> num) {
-		*os << num * factor
-		    << "\n";
-	}
-
-	if (os->bad()) {
-		cerr << "cannot write to output stream."
-		     << endl;
-		exit(1);
-	}
-	if (is->bad()) {
-		cerr << "cannot read from input stream."
-		     << endl;
-		exit(1);
-	}
-	if (!is->eof()) {
-		cerr << "cannot find EOF on input stream."
-		     << endl;
-		exit(1);
-	}
-}
-
 int
 main(int argc, char * const argv[])
 {
 	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente. Ver l�nea 51 main.cc
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline
-	multiply(iss, oss);	    // Funci�n externa, no es un metodo de ninguna clase o estructura usada en el c�digo
 }
