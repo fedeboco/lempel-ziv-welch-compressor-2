@@ -1,5 +1,5 @@
 # tp0_algo2
-Este repositorio es para la realización del TP0 de Algoritmos y programación II FIuba-1°C 2019.
+Este repositorio es para la realización del [TP0](https://drive.google.com/open?id=1HRHVCG4rCPjeaJc4PGqhb3bqituB64NW) de Algoritmos y programación II FIuba-1°C 2019.
 
 ## Git Workflow
 El flujo de trabajo que pretendemos es el propuesto por Vincent Driessen en [a successful git brnach model](https://nvie.com/posts/a-successful-git-branching-model/).
