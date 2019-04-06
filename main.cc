@@ -1,6 +1,6 @@
 // Prueba de la clase cmdline: dado un factor entero pasado por la
-// lï¿½nea de comando, leemos una secuencia de nï¿½meros que ingresan
-// por la entrada estï¿½ndar, los multiplicamos por ese factor, y
+// línea de comando, leemos una secuencia de números que ingresan
+// por la entrada estándar, los multiplicamos por ese factor, y
 // luego mostramos el resultado por std::cout.
 //
 // $Id: main.cc,v 1.5 2012/09/15 12:23:57 lesanti Exp $
@@ -20,30 +20,30 @@ static void opt_output(string const &);
 static void opt_factor(string const &);
 static void opt_help(string const &);
 
-// Tabla de opciones de lï¿½nea de comando. El formato de la tabla
-// consta de un elemento por cada opciï¿½n a definir. A su vez, en
+// Tabla de opciones de línea de comando. El formato de la tabla
+// consta de un elemento por cada opción a definir. A su vez, en
 // cada entrada de la tabla tendremos:
 //
-// o La primera columna indica si la opciï¿½n lleva (1) o no (0) un
+// o La primera columna indica si la opción lleva (1) o no (0) un
 //   argumento adicional.
 //
-// o La segunda columna representa el nombre corto de la opciï¿½n.
+// o La segunda columna representa el nombre corto de la opción.
 //
 // o Similarmente, la tercera columna determina el nombre largo.
 //
 // o La cuarta columna contiene el valor por defecto a asignarle
-//   a esta opciï¿½n en caso que no estï¿½ explï¿½citamente presente
-//   en la lï¿½nea de comandos del programa. Si la opciï¿½n no tiene
+//   a esta opción en caso que no esté explícitamente presente
+//   en la línea de comandos del programa. Si la opción no tiene
 //   argumento (primera columna nula), todo esto no tiene efecto.
 //
-// o La quinta columna apunta al mï¿½todo de parseo de la opciï¿½n,
+// o La quinta columna apunta al método de parseo de la opción,
 //   cuyo prototipo debe ser siempre void (*m)(string const &arg);
 //
-// o La ï¿½ltima columna sirve para especificar el comportamiento a
-//   adoptar en el momento de procesar esta opciï¿½n: cuando la
-//   opciï¿½n es obligatoria, deberï¿½ activarse OPT_MANDATORY.
+// o La última columna sirve para especificar el comportamiento a
+//   adoptar en el momento de procesar esta opción: cuando la
+//   opción es obligatoria, deberá activarse OPT_MANDATORY.
 //
-// Ademï¿½s, la ï¿½ltima entrada de la tabla debe contener todos sus
+// Además, la última entrada de la tabla debe contener todos sus
 // elementos nulos, para indicar el final de la misma.
 //
 
@@ -70,7 +70,7 @@ static void
 opt_input(string const &arg)
 {
 	// Si el nombre del archivos es "-", usaremos la entrada
-	// estï¿½ndar. De lo contrario, abrimos un archivo en modo
+	// estándar. De lo contrario, abrimos un archivo en modo
 	// de lectura.
 	//
 	if (arg == "-") {
@@ -82,7 +82,6 @@ opt_input(string const &arg)
 										// the current value of the string object.
 		iss = &ifs;
 	}
-
 
 	// Verificamos que el stream este OK.
 	//
@@ -99,7 +98,7 @@ static void
 opt_output(string const &arg)
 {
 	// Si el nombre del archivos es "-", usaremos la salida
-	// estï¿½ndar. De lo contrario, abrimos un archivo en modo
+	// estándar. De lo contrario, abrimos un archivo en modo
 	// de escritura.
 	//
 	if (arg == "-") {
@@ -116,7 +115,7 @@ opt_output(string const &arg)
 		     << arg
 		     << "."
 		     << endl;
-		exit(1);		// EXIT: Terminaciï¿½n del programa en su totalidad
+		exit(1);		// EXIT: Terminación del programa en su totalidad
 	}
 }
 
@@ -125,10 +124,10 @@ opt_factor(string const &arg)
 {
 	istringstream iss(arg);
 
-	// Intentamos extraer el factor de la lï¿½nea de comandos.
-	// Para detectar argumentos que ï¿½nicamente consistan de
-	// nï¿½meros enteros, vamos a verificar que EOF llegue justo
-	// despuï¿½s de la lectura exitosa del escalar.
+	// Intentamos extraer el factor de la línea de comandos.
+	// Para detectar argumentos que únicamente consistan de
+	// números enteros, vamos a verificar que EOF llegue justo
+	// después de la lectura exitosa del escalar.
 	//
 	if (!(iss >> factor)
 	    || !iss.eof()) {
@@ -184,7 +183,7 @@ multiply(istream *is, ostream *os)
 int
 main(int argc, char * const argv[])
 {
-	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente. Ver lï¿½nea 51 main.cc
+	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente. Ver línea 51 main.cc
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline
-	multiply(iss, oss);	    // Funciï¿½n externa, no es un metodo de ninguna clase o estructura usada en el cï¿½digo
+	multiply(iss, oss);	    // Función externa, no es un metodo de ninguna clase o estructura usada en el código
 }
