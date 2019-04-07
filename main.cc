@@ -84,7 +84,6 @@ opt_input(string const &arg)
 		iss = &ifs;
 	}
 
-
 	// Verificamos que el stream este OK.
 	//
 	if (!iss->good()) {
