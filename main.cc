@@ -12,6 +12,7 @@
 #include <cstdlib>
 
 #include <cmdline.h>
+#include <arreglo.h>
 
 using namespace std;
 
@@ -153,4 +154,20 @@ main(int argc, char * const argv[])
 {
 	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente. Ver l�nea 51 main.cc
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline
+	
+	
+	arreglo a(10);
+
+	a.asignar_secuencia(2,3,'C');
+	cout << a.obtener_P(1) << a.obtener_P(2) << a.obtener_P(3) << endl;
+
+	secuencia sec1 = a[2];
+	a.asignar_secuencia(1,sec1.getP(),sec1.getS());
+	cout << a.obtener_P(1) << a.obtener_P(2) << a.obtener_P(3) << endl;
+
+	secuencia sec2;
+	sec2.setPS(24,' ');
+	a.asignar_secuencia(1,sec2.getP(),sec2.getS());
+	cout << a.obtener_P(1) << a.obtener_P(2) << a.obtener_P(3) << endl;
+
 }
