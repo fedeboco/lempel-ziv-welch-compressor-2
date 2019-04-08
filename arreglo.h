@@ -39,9 +39,14 @@ public:
     
     void asignar_dato(const int, const secuencia &);
     void asignar_secuencia(const int pos, const int &, const char &);
-    int obtener_P(const int);
+    int obtener_P(const int) const;
+    char obtener_S(const int) const;
     secuencia & operator[](const int);
     secuencia & get_dato(const int);
+    void resetear_diccionario();
+    int get_size() const;
+    const int buscar_secuencia(const int &, const char &);
+    int agregar_secuencia(const int &, const char &);
 
 };
 

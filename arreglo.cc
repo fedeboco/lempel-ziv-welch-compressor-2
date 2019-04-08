@@ -44,9 +44,57 @@ void arreglo::asignar_secuencia(const int pos, const int & P, const char & S)
     dato_[pos].setS(S);
 }
 
-int arreglo::obtener_P(const int pos)
+int arreglo::obtener_P(const int pos) const
 {
     return dato_[pos].getP();
+}
+
+char arreglo::obtener_S(const int pos) const 
+{
+    return dato_[pos].getS();
+}
+
+void arreglo::resetear_diccionario()
+{
+    int i_max = *size_ - 1;
+    for(int i = 256; i <= i_max; i++)
+    {
+        this->asignar_secuencia(i, -2, -2);
+    }
+
+}
+
+int arreglo::agregar_secuencia(const int & P, const char & S)
+{
+    int size = this->get_size();
+    int i = 256;
+
+    for( i = 256; i >= 0 && i <= size && this->obtener_P(i) != -2; i++ );
+    if( i == size + 1){
+        this -> resetear_diccionario();
+        i = 256;
+    }
+        
+    this->asignar_secuencia(i, P, S);
+
+    return i; //retorna última posición agregada
+}
+
+
+const int arreglo::buscar_secuencia(const int & P, const char & S)
+{
+    int size = this->get_size();
+    for( int i = 0; i >= 0 && i <= size && this->obtener_P(i) != -2; i++ )
+    {
+        if(this->obtener_P(i) == P && this->obtener_S(i) == S)
+            return i;
+    }
+    return -1;
+}
+
+int arreglo::get_size() const
+{
+    return *size_;
 }
 
 //Constructor

@@ -13,6 +13,7 @@
 
 #include <cmdline.h>
 #include <arreglo.h>
+#include <compresion.h>
 
 using namespace std;
 
@@ -64,7 +65,8 @@ static ostream *oss = 0;	// Output Stream (clase para manejo de los flujos de sa
 static fstream ifs; 		// Input File Stream (derivada de la clase ifstream que deriva de istream para el manejo de archivos)
 static fstream ofs;		// Output File Stream (derivada de la clase ofstream que deriva de ostream para el manejo de archivos)
 
-
+static bool comprimir_archivo = false;
+static bool descomprimir_archivo = false;
 
 /*****************************************************/
 
@@ -124,11 +126,13 @@ opt_output(string const &arg)
 static void
 opt_compress(string const &arg)
 {
-	//istringstream iss(arg);
 
-	//Aca van las instrucciones para comprimir
-
-	cout << "Comprimiendo" << endl;
+	if( descomprimir_archivo )
+	{
+		cout << "Error: realice una operación a la vez.";
+		exit(1);
+	}
+	comprimir_archivo = true;
 
 }
 
@@ -136,9 +140,13 @@ static void
 opt_decompress(string const &arg)
 {
 
-	//Aca van las instrucciones para descomprimir
+	if( comprimir_archivo )
+	{
+		cout << "Error: realice una operación a la vez.";
+		exit(1);
+	}
+	descomprimir_archivo = true;
 
-	cout << "Descomprimiendo" << endl;
 }
 
 static void
@@ -155,19 +163,11 @@ main(int argc, char * const argv[])
 	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente. Ver l�nea 51 main.cc
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline
 	
-	
-	arreglo a(10);
-
-	a.asignar_secuencia(2,3,'C');
-	cout << a.obtener_P(1) << a.obtener_P(2) << a.obtener_P(3) << endl;
-
-	secuencia sec1 = a[2];
-	a.asignar_secuencia(1,sec1.getP(),sec1.getS());
-	cout << a.obtener_P(1) << a.obtener_P(2) << a.obtener_P(3) << endl;
-
-	secuencia sec2;
-	sec2.setPS(24,' ');
-	a.asignar_secuencia(1,sec2.getP(),sec2.getS());
-	cout << a.obtener_P(1) << a.obtener_P(2) << a.obtener_P(3) << endl;
+	if( comprimir_archivo ){
+		arreglo dic(65536);
+		cargarASCII(dic);
+		comprimir(dic, iss, oss);
+		cout << "Compresión correcta." << endl;
+	}
 
 }
