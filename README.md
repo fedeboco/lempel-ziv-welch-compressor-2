@@ -21,7 +21,7 @@ El flujo de trabajo que pretendemos es el propuesto por Vincent Driessen en [a s
     Por ejemplo:
     - **Nombre inicial**: tp0_1.0
     - **Nombre final**: tp0_1.1
-* **Release_xx**  
+* **Issue_xx**  
     En estas ramas se implementan mejoras o correcciones de bugs.  
     El *flow* es el siguiente:  
     1. Se agrega una *issue* [aca](https://github.com/fedeboco/tp0_algo2/issues), donde se describe el tipo  :negative_squared_cross_mark: Bug o Mejora  :white_check_mark:.  
