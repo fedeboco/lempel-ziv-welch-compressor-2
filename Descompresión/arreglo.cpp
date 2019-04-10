@@ -117,18 +117,32 @@ int arreglo::obtener_indice (const int & ubic)
 bool arreglo::buscar_indice(const int & S, int * ubic)
 {
     int size = this -> get_size();
-    for(*ubic = 0; *ubic <= size;(*ubic)++)
+    if (S < 256)
     {
-        if(this -> obtener_S(*ubic) == S)
-            return true;
+        for(*ubic = 0; *ubic <= size;(*ubic)++)
+        {
+            //cout << "Ubicación: " << *ubic << endl;
+            if(this -> obtener_S(*ubic) == S)
+                return true;
+        }
     }
+    else
+    {
+        for(*ubic = 255; *ubic <= size;(*ubic)++)
+        {
+            //cout << "Ubicación: " << *ubic << endl;
+            if(this -> obtener_P(*ubic) == S)
+                return true;
+        }
+    }
+    
     return false;
 }
 
 void arreglo::imprimir_indice (const int & ubic)
 {
     int aux_P, aux_S;
-    if (ubic <= 256)
+    if (ubic <= 255)
         cout << "Indice: " << ubic << ", corresponde a:" << this -> obtener_S(ubic) << endl;
     else
     {

@@ -23,10 +23,20 @@ int main (){
             diccionario.asignar_secuencia(i,-1,i);            
            // cout << "caracter " << i << ":" << "P=" << diccionario.obtener_P(i) << " S=" << diccionario.obtener_S(i) << endl;
     }
+    /*
+    char c;
     
+    while (archivo_com.get(c))
+        cout << c << endl;
+    
+    if(archivo_com.eof())
+        cout << "ERROR" << endl;
+
+    */
     if(archivo_com.is_open()){
         char indice_actual_aux;
         int indice_anterior=0,indice_actual = 0,aux;
+        
         while((indice_actual_aux=archivo_com.get()) != ',')
         {
             aux = int(indice_actual_aux)-48;
@@ -34,35 +44,46 @@ int main (){
         }
         cout << "Indice: " << indice_actual << " Corresponde a:" << diccionario.obtener_S(indice_actual) << endl;
        
-        while (archivo_com.eof()!=true)
+        while (archivo_com.eof() == false)        
         {
             indice_anterior = indice_actual;
             indice_actual=0;
-             while((indice_actual_aux=archivo_com.get()) != ',' || archivo_com.eof() == true)
-            {
+             while((indice_actual_aux=archivo_com.get()) != ',' && archivo_com.eof() == false)
+            {   
+                //cout << "Indice_leido: " << indice_actual_aux << endl;
                 aux = int(indice_actual_aux)-48;
                 indice_actual = indice_actual * 10+ aux;
             }
-            int ubic = 0;
-            if(diccionario.buscar_indice(indice_actual, &ubic) == true)
-            {
+            int ubic = 0, aux_u;;
+            //if(diccionario.buscar_indice(indice_actual, &ubic) == true)
+            //Rulo: USo la posición de indice_actual para saber si esta o no en el diccionario
+            if (indice_actual <= cont) 
+            {   
+                ubic = indice_actual;
+                //cout << "Lo encontre" << endl;
+                
+                
                 diccionario.imprimir_indice(ubic);
-                int aux_u;
                 aux_u = diccionario.obtener_indice(ubic);   
+                //cout << aux_u << ubic <<endl;
                 if((diccionario.agregar_secuencia(indice_anterior,aux_u,&cont))==false) //Se rompia aca
                 {
                     cout << MSJ_DIC_LLENO << endl;
                 }
-              
+                //cout << "Se agrego la posición: "<< cont << " al diccionario con P: " << indice_anterior << " S: " << aux_u  << endl;
             }
             else
             {
-                cout << "Maurcio Macri la puta que te pario" << endl;   
+                aux_u = diccionario.obtener_indice(indice_anterior);  
+                if((diccionario.agregar_secuencia(indice_anterior,aux_u,&cont))==false) 
+                {
+                    cout << MSJ_DIC_LLENO << endl;
+                }
+                diccionario.imprimir_indice(aux_u);
             }
-            
             //cout << indice_actual << endl;
         }
-        cout << "GOLA" << endl;
+        
     }
     else
     {
