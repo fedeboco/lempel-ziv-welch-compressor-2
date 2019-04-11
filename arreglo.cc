@@ -63,6 +63,16 @@ int diccionario::agregar_secuencia(const int & P, const char & S)
     return (*this).ult_; //retorna última posición agregada
 }
 
+bool diccionario::agregar_secuencia(const int & P, const char & S, int *cont)
+{
+    if(*cont== *size_ +1)
+    {
+        this -> resetear_diccionario();
+        return false;
+    }
+    this->asignar_secuencia(++(*cont), P, S);
+    return true;
+}
 
 const int diccionario::buscar_secuencia(const int & P, const char & S)
 {
@@ -75,6 +85,58 @@ const int diccionario::buscar_secuencia(const int & P, const char & S)
     return -1;
 }
 
+int diccionario::obtener_indice(const int & ubic)
+{
+    if (ubic < 256)
+        return ubic;
+    else
+    {
+        int aux_P;
+        aux_P = this -> obtener_P(ubic);
+        this -> obtener_indice(aux_P);
+    }
+    
+}
+
+bool diccionario::buscar_indice(const int & S, int * ubic)
+{
+    int size = *size_;
+    if (S < 256)
+    {
+        for(*ubic = 0; *ubic <= size;(*ubic)++)
+        {
+            //cout << "Ubicación: " << *ubic << endl;
+            if(this -> obtener_S(*ubic) == S)
+                return true;
+        }
+    }
+    else
+    {
+        for(*ubic = 255; *ubic <= size;(*ubic)++)
+        {
+            if(this -> obtener_P(*ubic) == S)
+                return true;
+        }
+    }
+    
+    return false;
+}
+
+void diccionario::imprimir_indice (const int & ubic, ostream * oss)
+{
+    int aux_P, aux_S;
+    if (ubic <= 255)
+        *oss << "Indice: " << ubic << ", corresponde a:" << this -> obtener_S(ubic) << endl;
+    else
+    {
+        *oss << "Indice: "<< ubic << endl;
+        aux_P = this -> obtener_P(ubic);
+        aux_S = this -> obtener_S(ubic);
+        this -> imprimir_indice (aux_P, oss);
+        this -> imprimir_indice (aux_S, oss);
+    }
+        
+}
 
 
 //-----------------ARREGLO----------------------
