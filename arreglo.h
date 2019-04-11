@@ -61,6 +61,11 @@ public:
     int obtener_P(const int) const;
     char obtener_S(const int) const;
     void resetear_diccionario();
+    int obtener_indice(const int &);
+    bool buscar_indice(const int &, int *);
+    void imprimir_indice (const int &, ostream *);
+    bool agregar_secuencia(const int &, const char &, int *);
+
 };
 
 #endif
