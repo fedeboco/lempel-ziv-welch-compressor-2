@@ -15,6 +15,8 @@
 #include <arreglo.h>
 #include <compresion.h>
 
+#define MAX_VECTOR 65536
+
 using namespace std;
 
 static void opt_input(string const &);
@@ -164,10 +166,17 @@ main(int argc, char * const argv[])
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline
 	
 	if( comprimir_archivo ){
-		diccionario dic(65536);
+		diccionario dic(MAX_VECTOR);
 		cargarASCII(dic);
 		comprimir(dic, iss, oss);
 		cout << "Compresión correcta." << endl;
+	}
+
+	if( descomprimir_archivo ){
+		diccionario dic(MAX_VECTOR);
+		cargarASCII(dic);
+		descomprimir(dic, iss, oss);
+		cout << "Descompresión correcta." << endl;
 	}
 
 }
