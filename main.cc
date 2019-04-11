@@ -164,7 +164,7 @@ main(int argc, char * const argv[])
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline
 	
 	if( comprimir_archivo ){
-		arreglo dic(65536);
+		diccionario dic(65536);
 		cargarASCII(dic);
 		comprimir(dic, iss, oss);
 		cout << "Compresión correcta." << endl;

@@ -2,5 +2,5 @@
 #include "arreglo.h"
 using namespace std;
 
-bool comprimir(arreglo &, istream *, ostream *);
-bool cargarASCII(arreglo &);
+bool comprimir(diccionario &, istream *, ostream *);
+bool cargarASCII(diccionario &);

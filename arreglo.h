@@ -4,6 +4,7 @@ using namespace std;
 #ifndef ARREGLO_DEF
 #define ARREGLO_DEF
 
+//-------------SECUENCIA------------
 class secuencia
 {
 private:
@@ -23,31 +24,43 @@ public:
     char getS();
 };
 
-
-
-
-
+//-------------ARREGLO------------
 class arreglo
 {
 private:
     secuencia * dato_;
     int * size_;
+    int ult_;
 
 public:
-    arreglo(const int  &);
+    arreglo(const int &);
     ~arreglo();
     
-    void asignar_dato(const int, const secuencia &);
+    secuencia & operator[](const int);
+    secuencia & get_dato(const int);
+    int get_size() const;
+
+
+};
+
+//-------------DICCIONARIO------------
+class diccionario
+{
+private:
+    arreglo * dic_;
+    int * size_;
+    int ult_;
+
+public:
+    secuencia & obtener_secuencia(const int);
+    diccionario(const int &);
+    const int buscar_secuencia(const int &, const char &);
+    int agregar_secuencia(const int &, const char &);
+    void asignar_secuencia(const int, const secuencia &);
     void asignar_secuencia(const int pos, const int &, const char &);
     int obtener_P(const int) const;
     char obtener_S(const int) const;
-    secuencia & operator[](const int);
-    secuencia & get_dato(const int);
     void resetear_diccionario();
-    int get_size() const;
-    const int buscar_secuencia(const int &, const char &);
-    int agregar_secuencia(const int &, const char &);
-
 };
 
 #endif
