@@ -1,17 +1,18 @@
 #include <iostream>
 #include "compresion.h"
-#include "arreglo.h"
+
+
 using namespace std;
 
 #define MSJ_ERROR_FOPEN "No se pudo abrir el archivo."
 #define MSJ_DIC_LLENO "Se lleno el diccionario, se procede a resetearlo"
 
-bool cargarASCII(diccionario & dic)
+/*bool cargarASCII(diccionario & dic)
 {
     for(int i=0; i<=255; i++)
 		dic.asignar_secuencia(i,-1,char(i));
     return 1;
-}
+}*/
 
 bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 {
@@ -95,28 +96,27 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
     
     int cont=255;
     int ubic = 0, aux_u;
-    
-    //Rulo: Armo el diccionario
-    //for (int i=0;i < 255;i++)    
-    //        dic.asignar_secuencia(i,-1,i);           
-    
+           
     if( /*(*iss).is_open()*/ 1 == 1){
         char indice_actual_aux;
-        int indice_anterior=0,indice_actual = 0,aux;
+        int indice_anterior=0,indice_actual = 0;
         
         while((indice_actual_aux=(*iss).get()) != ',')
         {
+			int aux;
             aux = int(indice_actual_aux)-48;
             indice_actual = indice_actual * 10+ aux;
         }
-        *oss << "Primer Indice: " << indice_actual << " Corresponde a:" << dic.obtener_S(indice_actual) << endl;
-       
+        //*oss << "Primer Indice: " << indice_actual << " Corresponde a:" << dic.obtener_S(indice_actual) << endl;
+		*oss << dic.obtener_S(indice_actual);
+		//cout << "Primer Indice: " << indice_actual << " Corresponde a:" << dic.obtener_S(indice_actual) << endl;
         while ((*iss).eof() == false)        
         {
             indice_anterior = indice_actual;
             indice_actual=0;
              while((indice_actual_aux=(*iss).get()) != ',' && (*iss).eof() == false)
-            {                   
+            {   
+				int aux;                
                 aux = int(indice_actual_aux)-48;
                 indice_actual = indice_actual * 10+ aux;
             }         
@@ -129,12 +129,11 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
                 ubic = indice_actual;                                    
                 dic.imprimir_indice(ubic, oss);
                 aux_u = dic.obtener_indice(ubic);            
-               if((dic.agregar_secuencia(indice_anterior,aux_u,&cont))==false) //Se rompia aca
+               if((dic.agregar_secuencia(indice_anterior,aux_u,&cont))==false) 
                 {
                     cout << MSJ_DIC_LLENO << endl;
                 }
-
-            }
+			}
             else
             {
                 aux_u = dic.obtener_indice(indice_anterior);  

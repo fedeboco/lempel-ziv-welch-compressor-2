@@ -6,13 +6,13 @@
 // $Id: main.cc,v 1.5 2012/09/15 12:23:57 lesanti Exp $
 
 #include <fstream>
+
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
 
 #include <cmdline.h>
-#include <arreglo.h>
 #include <compresion.h>
 
 #define MAX_VECTOR 65536
@@ -167,16 +167,19 @@ main(int argc, char * const argv[])
 	
 	if( comprimir_archivo ){
 		diccionario dic(MAX_VECTOR);
-		cargarASCII(dic);
+		//cargarASCII(dic);
+		dic.cargar_ASCII();
 		comprimir(dic, iss, oss);
 		cout << "Compresión correcta." << endl;
 	}
 
 	if( descomprimir_archivo ){
 		diccionario dic(MAX_VECTOR);
-		cargarASCII(dic);
+		//cargarASCII(dic);
+		dic.cargar_ASCII();
 		descomprimir(dic, iss, oss);
 		cout << "Descompresión correcta." << endl;
 	}
-
+	ifs.close();
+	ofs.close();
 }
