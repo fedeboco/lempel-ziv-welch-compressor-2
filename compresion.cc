@@ -68,7 +68,6 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 	int j = 0;
 	while( (S = (*iss).get()) != EOF )
 	{	
-		cout<<"HOLAAA"<<endl;
 		indice = dic.buscar_secuencia(P, S); // busco secuencia
 		
 		//Si no la encuentro
@@ -105,7 +104,6 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 	
 	for(int i = 0; i <= j; i++)
 	{
-		cout << "LEO: "<< S << buffer.obtener_P(i)<<endl;
 		*oss << "," << buffer.obtener_P(i);
 	}
 	
