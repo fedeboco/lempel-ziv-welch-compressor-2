@@ -2,12 +2,10 @@
 #include "diccionario.h"
 
 #define MIN_SIZE 255
-
 #define MSJ_ERROR_SIZE_DICC "El tamaño del diccionario es muy chico, se usará el default = 255"
+#define MSJ_ERROR_OBT_SEC "No existen secuencias con índice negativo o índice mayor al último elemento."
 
 using namespace std;
-
-//-------------------- Definición de la clase diccionario -------------------//
 
 diccionario::diccionario(const int & size)
 {
@@ -20,80 +18,85 @@ diccionario::diccionario(const int & size)
     dic_ = new arreglo(size_aux);
     size_ = new int;
     *size_ = size_aux;
-       
 }
+
 diccionario::~diccionario()
 {
         delete size_;
 }
+
+//Obtiene una secuencia del diccionario de tipo [int Prefijo, char Sufijo] y la retorna.
 secuencia & diccionario::obtener_secuencia(const int i)
 {
-    return (*this).dic_->get_dato(i);
+    if( i < 0 || i > ult_ )
+        cout << MSJ_ERROR_OBT_SEC << endl;
+    return dic_ -> obtener_dato(i);
 }
 
+//Copia una secuencia del tipo [int Prefijo, char Sufijo] a una posición del diccionario.
 void diccionario::asignar_secuencia(const int pos, const secuencia & dato)
 {
     (*dic_)[pos] = dato;
 }
 
+//Asigna un int P (Prefijo) y un char S (Sufijo) a una secuencia de cierta posición del diccionario.
 void diccionario::asignar_secuencia(const int pos, const int & P, const char & S)
 {
-    (*dic_)[pos].setP(P);
-    (*dic_)[pos].setS(S);
+    (*dic_)[pos].asignarP(P);
+    (*dic_)[pos].asignarS(S);
 }
 
+//Obtiene el prefijo de cierta posición del diccionario.
 int diccionario::obtener_P(const int pos) const
 {
-    return (*dic_)[pos].getP();
+    return (*dic_)[pos].obtenerP();
 }
 
+//Obtiene el sufijo de cierta posición del diccionario.
 char diccionario::obtener_S(const int pos) const 
 {
-    return (*dic_)[pos].getS();
+    return (*dic_)[pos].obtenerS();
 }
 
+//Vacía el diccionario.
 void diccionario::resetear_diccionario()
 {
-    int i_max = *size_ - 1;
-    for(int i = 256; i <= i_max; i++)
-    {
-        this->asignar_secuencia(i, -2, -2);
-    }
-    (*this).ult_ = 255;
-
+    ult_ = 255;
 }
 
+//Asigna un int P (Prefijo) y un char S (Sufijo) a la secuencia de la primera posición vacía del diccionario.
 int diccionario::agregar_secuencia(const int & P, const char & S)
 {
     int size = *size_;
-    if( (*this).ult_ >= size ){
+    if( ult_ >= size ){
         this -> resetear_diccionario();
-        (*this).ult_ = 255;
+        ult_ = 255;
     }
-
-    this->asignar_secuencia((*this).ult_ + 1, P, S);
-    (*this).ult_++;
+    this -> asignar_secuencia(ult_ + 1, P, S);
+    ult_++;
     
-    return (*this).ult_; //retorna última posición agregada
+    return ult_;
 }
 
+//Asigna un int P (Prefijo) y un char S (Sufijo) a la secuencia de la primera posición vacía del diccionario.
 bool diccionario::agregar_secuencia(const int & P, const char & S, int *cont)
 {
-    if(*cont== *size_ +1)
+    if( *cont== *size_ +1 )
     {
         this -> resetear_diccionario();
         return false;
     }
-    this->asignar_secuencia(++(*cont), P, S);
+    this -> asignar_secuencia(++(*cont), P, S);
     return true;
 }
 
+//Búsqueda secuencial de la primer secuencia que coincida con el prefijo y el sufijo suministrado. Retorna índice.
 const int diccionario::buscar_secuencia(const int & P, const char & S)
 {
     int size = *size_;
-    for( int i = 0; i >= 0 && i <= size && this->obtener_P(i) != -2; i++ )
+    for( int i = 0; i >= 0 && i <= size && i <= ult_; i++ )
     {
-        if(this->obtener_P(i) == P && this->obtener_S(i) == S)
+        if( this->obtener_P(i) == P && this->obtener_S(i) == S )
             return i;
     }
     return -1;
@@ -119,7 +122,6 @@ bool diccionario::buscar_indice(const int & S, int * ubic)
     {
         for(*ubic = 0; *ubic <= size;(*ubic)++)
         {
-            //cout << "Ubicación: " << *ubic << endl;
             if(this -> obtener_S(*ubic) == S)
                 return true;
         }
@@ -136,18 +138,16 @@ bool diccionario::buscar_indice(const int & S, int * ubic)
     return false;
 }
 
-void diccionario::imprimir_indice (const int & ubic, ostream * oss)
+//Imprime cadena de caracteres según indice.
+void diccionario::imprimir_indice(const int & ubic, ostream * oss)
 {
     int aux_P, aux_S;
     if (ubic <= 255)
     {
-        //*oss << "Indice: " << ubic << ", corresponde a:" << this -> obtener_S(ubic) << endl;
         *oss << this -> obtener_S(ubic);
-        //cout << "Indice: " << ubic << ", corresponde a:" << this -> obtener_S(ubic) << endl;
     }
     else
     {
-        //*oss << "Indice: "<< ubic << endl;
         aux_P = this -> obtener_P(ubic);
         aux_S = this -> obtener_S(ubic);
         this -> imprimir_indice (aux_P, oss);
@@ -156,9 +156,11 @@ void diccionario::imprimir_indice (const int & ubic, ostream * oss)
         
 }
 
-bool diccionario::cargar_ASCII (int tam)
+//Carga tabla ASCII extendida desde 0 hasta 255.
+bool diccionario::cargar_ASCII()
 {
     for(int i=0; i<=255; i++)
 	    this -> asignar_secuencia(i,-1,char(i));
+    ult_ = 255;        
     return true;
 }

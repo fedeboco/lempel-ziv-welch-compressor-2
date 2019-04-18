@@ -19,8 +19,8 @@ public:
     ~arreglo();
     
     secuencia & operator[](const int);
-    secuencia & get_dato(const int);
-    int get_size() const;
+    secuencia & obtener_dato(const int);
+    int obtener_size() const;
 
 
 };

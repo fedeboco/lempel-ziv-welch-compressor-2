@@ -3,16 +3,12 @@
 
 using namespace std;
 
-//-------------------- Definición de la clase secuencia -------------------//
-
-//Constructor
 secuencia::secuencia()
 {
     P_ = new int;
     S_ = new char;
 }
 
-//Constructor
 secuencia::secuencia(const int & P, const char & S)
 {
     P_ = new int;
@@ -23,7 +19,6 @@ secuencia::secuencia(const int & P, const char & S)
 
 }
 
-//Constructor copia
 void secuencia::operator=(const secuencia & sec)
 {
     P_ = new int;
@@ -40,28 +35,28 @@ secuencia::~secuencia()
     delete S_;
 }
 
-void secuencia::setP(const int & P)
+void secuencia::asignarP(const int & P)
 {
     *P_ = P;
 }
 
-void secuencia::setS(const char & S)
+void secuencia::asignarS(const char & S)
 {
     *S_ = S;
 }
 
-void secuencia::setPS(const int & P, const char & S)
+void secuencia::asignarPS(const int & P, const char & S)
 {
     *P_ = P;
     *S_ = S;
 }
 
-int secuencia::getP()
+int secuencia::obtenerP()
 {
     return *P_;
 }
 
-char secuencia::getS()
+char secuencia::obtenerS()
 {
     return *S_;
 }

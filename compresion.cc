@@ -7,13 +7,11 @@ using namespace std;
 #define MSJ_DIC_LLENO "Se lleno el diccionario, se procede a resetearlo"
 #define MSJ_ARCHIVO_VACIO "El archivo a tratar está vacío"
 
-bool comprimir(diccionario & dic, istream * iss, ostream *oss)
+//Comprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
+bool comprimir(diccionario & dic, istream * iss, ostream *oss, const int buffer_size)
 {
     char S;
-	int buffer_size = 1000000;
 	diccionario buffer(buffer_size);
-
-	dic.resetear_diccionario();
 
 	int P = -1;
 	int indice = -1;
@@ -59,7 +57,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 		}
 		P = indice;
 
-		//Fede: Vacío buffer
+		//Fede: Vacío buffer.
 		if( j >= buffer_size )
 		{			
 			j = 0;
@@ -76,6 +74,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
     return 1;
 }
 
+//Descomprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
 bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 {  
     
