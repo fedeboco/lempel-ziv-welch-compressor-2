@@ -182,4 +182,5 @@ main(int argc, char * const argv[])
 	}
 	ifs.close();
 	ofs.close();
+	return 0;
 }
