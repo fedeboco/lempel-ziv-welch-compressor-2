@@ -4,7 +4,6 @@
 using namespace std;
 
 #define MSJ_ERROR_FOPEN "No se pudo abrir el archivo."
-#define MSJ_DIC_LLENO "Se lleno el diccionario, se procede a resetearlo"
 #define MSJ_ARCHIVO_VACIO "El archivo a tratar está vacío"
 
 //Comprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
@@ -77,8 +76,6 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, const int buffer_
 //Descomprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
 bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 {  
-    
-    int cont=255;
     int ubic = 0, aux_u;
 	bool Pr_carac_flag = false;     
     
@@ -118,24 +115,19 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
             
         //if(diccionario.buscar_indice(indice_actual, &ubic) == true)
         //Rulo: USo la posición de indice_actual para saber si esta o no en el diccionario
-        if (indice_actual <= cont) 
-        {
+        if(indice_actual <= dic.obtener_ult_())
+		{
+			
         	ubic = indice_actual;                                    
             dic.imprimir_indice(ubic, oss);
             aux_u = dic.obtener_indice(ubic);            
-            if((dic.agregar_secuencia(indice_anterior,aux_u,&cont))==false) 
-            {
-                cout << MSJ_DIC_LLENO << endl;
-            }
+			dic.agregar_secuencia(indice_anterior,aux_u);
 		}
         else
         {
             aux_u = dic.obtener_indice(indice_anterior);  
-            if((dic.agregar_secuencia(indice_anterior,aux_u,&cont))==false) 
-            {
-                cout << MSJ_DIC_LLENO << endl;
-            }
-            dic.imprimir_indice(cont, oss);
+			dic.agregar_secuencia(indice_anterior,aux_u);
+            dic.imprimir_indice(dic.obtener_ult_(), oss);
         }
     }
     return 0;

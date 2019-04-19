@@ -4,6 +4,7 @@
 #define MIN_SIZE 255
 #define MSJ_ERROR_SIZE_DICC "El tamaño del diccionario es muy chico, se usará el default = 255"
 #define MSJ_ERROR_OBT_SEC "No existen secuencias con índice negativo o índice mayor al último elemento."
+#define MSJ_DIC_LLENO "Se lleno el diccionario, se procede a resetearlo"
 
 using namespace std;
 
@@ -58,6 +59,12 @@ char diccionario::obtener_S(const int pos) const
     return (*dic_)[pos].obtenerS();
 }
 
+//Obtiene la ultima posición
+int diccionario::obtener_ult_()
+{
+    return ult_;
+}
+
 //Vacía el diccionario.
 void diccionario::resetear_diccionario()
 {
@@ -69,6 +76,7 @@ int diccionario::agregar_secuencia(const int & P, const char & S)
 {
     int size = *size_;
     if( ult_ >= size ){
+        cout << MSJ_DIC_LLENO << endl;
         this -> resetear_diccionario();
         ult_ = 255;
     }
@@ -76,18 +84,6 @@ int diccionario::agregar_secuencia(const int & P, const char & S)
     ult_++;
     
     return ult_;
-}
-
-//Asigna un int P (Prefijo) y un char S (Sufijo) a la secuencia de la primera posición vacía del diccionario.
-bool diccionario::agregar_secuencia(const int & P, const char & S, int *cont)
-{
-    if( *cont== *size_ +1 )
-    {
-        this -> resetear_diccionario();
-        return false;
-    }
-    this -> asignar_secuencia(++(*cont), P, S);
-    return true;
 }
 
 //Búsqueda secuencial de la primer secuencia que coincida con el prefijo y el sufijo suministrado. Retorna índice.
