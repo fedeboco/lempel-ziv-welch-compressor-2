@@ -80,13 +80,12 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
     
     int cont=255;
     int ubic = 0, aux_u;
-	bool Pr_carac_flag = false;
-    bool unico_char_flag = false;       
+	bool Pr_carac_flag = false;     
     
     char indice_actual_aux;
     int indice_anterior=0,indice_actual = 0;
         
-    while((indice_actual_aux=(*iss).get()) != ',' && unico_char_flag != true)
+    while((indice_actual_aux=(*iss).get()) != ',')
     {		
 		if (indice_actual_aux == EOF )
 		{
