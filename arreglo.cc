@@ -4,9 +4,6 @@
 
 using namespace std;
 
-//-------------------- Definición de la clase arreglo -------------------//
-
-//Constructor
 arreglo::arreglo(const int & size)
 {
     if( size > 0 )
@@ -18,25 +15,23 @@ arreglo::arreglo(const int & size)
 
 }
 
-//Destructor
 arreglo::~arreglo()
 {
     delete[] dato_;
     delete size_;
 }
 
-//Indexación
 secuencia & arreglo::operator[](const int pos)
 {
     return dato_[pos];
 }
 
-secuencia & arreglo::get_dato(const int pos)
+secuencia & arreglo::obtener_dato(const int pos)
 {
     return dato_[pos];
 }
 
-int arreglo::get_size() const
+int arreglo::obtener_size() const
 {
     return *size_;
 }

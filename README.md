@@ -8,7 +8,7 @@ El flujo de trabajo que pretendemos es el propuesto por Vincent Driessen en [a s
     Contiene la última versión estable.
     Cuando se realiza un release (ver **release** debajo) taguear de la sigueinte forma.
     
-    > git tag -a tp0_1.0 -m "Comentario adicional 
+    > git tag -a TP0_1.0 -m "Comentario adicional 
     
     _Cómo taguear:_
     - **tp0** : hace referencia al tp en si.

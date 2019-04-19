@@ -2,6 +2,5 @@
 #include "diccionario.h"
 using namespace std;
 
-bool comprimir(diccionario &, istream *, ostream *);
+bool comprimir(diccionario &, istream *, ostream *, const int);
 bool descomprimir(diccionario &, istream *, ostream *);
-//bool cargarASCII(diccionario &);

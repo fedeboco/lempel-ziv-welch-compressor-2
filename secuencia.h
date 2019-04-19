@@ -17,10 +17,10 @@ public:
     ~secuencia();
 
     void operator=(const secuencia &);
-    void setP(const int &);
-    void setS(const char &);
-    void setPS(const int &, const char &);
-    int getP();
-    char getS();
+    void asignarP(const int &);
+    void asignarS(const char &);
+    void asignarPS(const int &, const char &);
+    int obtenerP();
+    char obtenerS();
 };
 #endif
