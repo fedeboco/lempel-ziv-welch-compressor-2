@@ -75,7 +75,7 @@ void diccionario::resetear_diccionario()
 int diccionario::agregar_secuencia(const int & P, const char & S)
 {
     int size = *size_;
-    if( ult_ >= size ){
+    if( ult_ >= size - 1){
         cout << MSJ_DIC_LLENO << endl;
         this -> resetear_diccionario();
         ult_ = 255;
