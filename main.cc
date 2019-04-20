@@ -1,6 +1,6 @@
 // Prueba de la clase cmdline: dado un factor entero pasado por la
-// l�nea de comando, leemos una secuencia de n�meros que ingresan
-// por la entrada est�ndar, los multiplicamos por ese factor, y
+// línea de comando, leemos una secuencia de números que ingresan
+// por la entrada estándar, los multiplicamos por ese factor, y
 // luego mostramos el resultado por std::cout.
 //
 // $Id: main.cc,v 1.5 2012/09/15 12:23:57 lesanti Exp $
@@ -30,30 +30,30 @@ static void opt_compress(string const &);
 static void opt_decompress(string const &);
 static void opt_help(string const &);
 
-// Tabla de opciones de l�nea de comando. El formato de la tabla
-// consta de un elemento por cada opci�n a definir. A su vez, en
+// Tabla de opciones de línea de comando. El formato de la tabla
+// consta de un elemento por cada opción a definir. A su vez, en
 // cada entrada de la tabla tendremos:
 //
-// o La primera columna indica si la opci�n lleva (1) o no (0) un
+// o La primera columna indica si la opción lleva (1) o no (0) un
 //   argumento adicional.
 //
-// o La segunda columna representa el nombre corto de la opci�n.
+// o La segunda columna representa el nombre corto de la opción.
 //
 // o Similarmente, la tercera columna determina el nombre largo.
 //
 // o La cuarta columna contiene el valor por defecto a asignarle
-//   a esta opci�n en caso que no est� expl�citamente presente
-//   en la l�nea de comandos del programa. Si la opci�n no tiene
+//   a esta opción en caso que no está explícitamente presente
+//   en la línea de comandos del programa. Si la opción no tiene
 //   argumento (primera columna nula), todo esto no tiene efecto.
 //
-// o La quinta columna apunta al m�todo de parseo de la opci�n,
+// o La quinta columna apunta al método de parseo de la opción,
 //   cuyo prototipo debe ser siempre void (*m)(string const &arg);
 //
-// o La �ltima columna sirve para especificar el comportamiento a
-//   adoptar en el momento de procesar esta opci�n: cuando la
-//   opci�n es obligatoria, deber� activarse OPT_MANDATORY.
+// o La última columna sirve para especificar el comportamiento a
+//   adoptar en el momento de procesar esta opción: cuando la
+//   opción es obligatoria, deberá activarse OPT_MANDATORY.
 //
-// Adem�s, la �ltima entrada de la tabla debe contener todos sus
+// Además, la última entrada de la tabla debe contener todos sus
 // elementos nulos, para indicar el final de la misma.
 //
 
@@ -81,7 +81,7 @@ static void
 opt_input(string const &arg)
 {
 	// Si el nombre del archivos es "-", usaremos la entrada
-	// est�ndar. De lo contrario, abrimos un archivo en modo
+	// estándar. De lo contrario, abrimos un archivo en modo
 	// de lectura.
 	//
 	if (arg == "-") {
@@ -109,7 +109,7 @@ static void
 opt_output(string const &arg)
 {
 	// Si el nombre del archivos es "-", usaremos la salida
-	// est�ndar. De lo contrario, abrimos un archivo en modo
+	// estándar. De lo contrario, abrimos un archivo en modo
 	// de escritura.
 	//
 	if (arg == "-") {
@@ -126,7 +126,7 @@ opt_output(string const &arg)
 		     << arg
 		     << "."
 		     << endl;
-		exit(1);		// EXIT: Terminaci�n del programa en su totalidad
+		exit(1);		// EXIT: Terminación del programa en su totalidad
 	}
 }
 
@@ -167,7 +167,7 @@ opt_help(string const &arg)
 int
 main(int argc, char * const argv[])
 {
-	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente. Ver l�nea 51 main.cc
+	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente. Ver línea 51 main.cc
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline
 	
 	if( comprimir_archivo ){
