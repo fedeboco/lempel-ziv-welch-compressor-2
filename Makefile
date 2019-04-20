@@ -8,3 +8,6 @@ tp0.exe: main.cc cmdline.cc diccionario.cc arreglo.cc secuencia.cc compresion.cc
 
 clean:
 	$(RM) -vf *.o *.exe *.t *.out *.err
+
+valgrind: 
+	valgrind ./tp0.exe -c -i "entrada4.txt" -o "salida4.txt"

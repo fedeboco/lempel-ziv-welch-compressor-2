@@ -23,6 +23,9 @@ diccionario::diccionario(const int & size)
 
 diccionario::~diccionario()
 {
+    if( dic_ )
+        delete dic_;
+    if( size_ )
         delete size_;
 }
 
