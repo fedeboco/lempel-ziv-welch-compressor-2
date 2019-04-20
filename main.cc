@@ -16,7 +16,6 @@
 #include <compresion.h>
 
 #define MAX_VECTOR 65536
-#define BUFFER_SIZE 1000000
 
 using namespace std;
 
@@ -169,14 +168,22 @@ main(int argc, char * const argv[])
 	if( comprimir_archivo ){
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
-		comprimir(dic, iss, oss, BUFFER_SIZE);
+		if( comprimir(dic, iss, oss) )
+		{
+			cout << "Compresión fallida." << endl;
+			return 1;
+		}
 		cout << "Compresión correcta." << endl;
 	}
 
 	if( descomprimir_archivo ){
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
-		descomprimir(dic, iss, oss);
+		if( descomprimir(dic, iss, oss) )
+		{
+			cout << "Descompresión fallida." << endl;
+			return 1;
+		}
 		cout << "Descompresión correcta." << endl;
 	}
 	

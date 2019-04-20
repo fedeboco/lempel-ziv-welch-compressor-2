@@ -4,33 +4,28 @@
 using namespace std;
 
 #define MSJ_ERROR_FOPEN "No se pudo abrir el archivo."
-#define MSJ_ARCHIVO_VACIO "El archivo a tratar está vacío"
+#define MSJ_ARCHIVO_VACIO "El archivo a tratar está vacío."
 
 //Comprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
-bool comprimir(diccionario & dic, istream * iss, ostream *oss, const int buffer_size)
+bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 {
     char S;
-	diccionario buffer(buffer_size);
-
 	int P = -1;
 	int indice = -1;
 
 	//Fede: Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
 	if( (S = (*iss).get()) != EOF ){
 	
-		indice = dic.buscar_secuencia(-1, S);
-		P = indice;
+		P = dic.buscar_secuencia(-1, S);
 		if( (S = (*iss).get()) != EOF ){
 			dic.agregar_secuencia(P, S);
-			*oss << P; 
+			*oss << P << ","; 
 			P = dic.buscar_secuencia(-1,S);
 		}
 		// Rulo: Si el próximo caracter está vacío lo imprime y sale de la función.
 		else
 		{
-			dic.agregar_secuencia(P, S);
 			*oss << P; 
-			P = dic.buscar_secuencia(-1,S);
 			return 1;
 		}
 		
@@ -43,34 +38,19 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, const int buffer_
 	}
 
 	//Fede: Desde el tercer caracter hasta el final.	
-	int j = 0;
 	while( (S = (*iss).get()) != EOF )
 	{	
 		indice = dic.buscar_secuencia(P, S);
 		if( indice == -1 )
 		{
 			dic.agregar_secuencia(P, S);
-			buffer.asignar_secuencia(j, P, S);
+			*oss << P << ",";
 			indice = dic.buscar_secuencia(-1,S);
-			j++;
 		}
 		P = indice;
-
-		//Fede: Vacío buffer.
-		if( j >= buffer_size )
-		{			
-			j = 0;
-			for(int i = 0; i < buffer_size; i++)
-				*oss << "," << buffer.obtener_P(i); //imprimo salida
-		}
 	}
-
-	//Fede: Vacío lo que quedó del buffer
-	buffer.asignar_secuencia(j, P, S);
-	for(int i = 0; i <= j; i++)
-		*oss << "," << buffer.obtener_P(i);
-	
-    return 1;
+	*oss << P;
+	return 0;
 }
 
 //Descomprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
@@ -80,13 +60,13 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 	bool Pr_carac_flag = false;     
     
     char indice_actual_aux;
-    int indice_anterior=0,indice_actual = 0;
+    int indice_anterior=0, indice_actual = 0;
         
-    while((indice_actual_aux=(*iss).get()) != ',')
+    while( (indice_actual_aux=(*iss).get()) != ',' )
     {		
-		if (indice_actual_aux == EOF )
+		if ( indice_actual_aux == EOF )
 		{
-			if(Pr_carac_flag == false)
+			if( Pr_carac_flag == false )
 			{
 				cout << MSJ_ARCHIVO_VACIO << endl;
 				return true;
@@ -98,19 +78,19 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 		}
 		Pr_carac_flag = true;
 		int aux;
-    	aux = int(indice_actual_aux)-48;
-    	indice_actual = indice_actual * 10+ aux;
+    	aux = int(indice_actual_aux) - 48;
+    	indice_actual = indice_actual*10 + aux;
     }
 	*oss << dic.obtener_S(indice_actual);
-    while ((*iss).eof() == false)        
+    while ( (*iss).eof() == false )        
     {
         indice_anterior = indice_actual;
         indice_actual=0;
-        while((indice_actual_aux=(*iss).get()) != ',' && (*iss).eof() == false)
+        while( (indice_actual_aux=(*iss).get()) != ',' && (*iss).eof() == false )
         {   
 			int aux;                
-            aux = int(indice_actual_aux)-48;
-            indice_actual = indice_actual * 10+ aux;
+            aux = int(indice_actual_aux) - 48;
+            indice_actual = indice_actual*10 + aux;
         }         
             
         //if(diccionario.buscar_indice(indice_actual, &ubic) == true)
