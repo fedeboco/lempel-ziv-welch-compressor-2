@@ -17,6 +17,11 @@
 
 #define MAX_VECTOR 65536
 
+#define MSJ_ERROR_COMP "Compresión fallida."
+#define MSJ_OK_COMP "Compresión correcta."
+#define MSJ_ERROR_DESCOMP "Descompresión fallida."
+#define MSJ_OK_DESCOMP "Descompresión correcta." 
+
 using namespace std;
 
 static void opt_input(string const &);
@@ -170,10 +175,10 @@ main(int argc, char * const argv[])
 		dic.cargar_ASCII();
 		if( comprimir(dic, iss, oss) )
 		{
-			cout << "Compresión fallida." << endl;
+			cout << MSJ_ERROR_COMP << endl;
 			return 1;
 		}
-		cout << "Compresión correcta." << endl;
+		cout << MSJ_OK_COMP << endl;
 	}
 
 	if( descomprimir_archivo ){
@@ -181,10 +186,10 @@ main(int argc, char * const argv[])
 		dic.cargar_ASCII();
 		if( descomprimir(dic, iss, oss) )
 		{
-			cout << "Descompresión fallida." << endl;
+			cout << MSJ_ERROR_DESCOMP << endl;
 			return 1;
 		}
-		cout << "Descompresión correcta." << endl;
+		cout << MSJ_OK_DESCOMP << endl;
 	}
 	
 	ifs.close();

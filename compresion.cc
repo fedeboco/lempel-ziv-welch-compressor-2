@@ -13,7 +13,8 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 	int P = -1;
 	int indice = -1;
 
-	//Fede: Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
+	dic.resetear_diccionario();
+	//Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
 	if( (S = (*iss).get()) != EOF ){
 	
 		P = dic.buscar_secuencia(-1, S);
@@ -22,7 +23,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 			*oss << P << ","; 
 			P = dic.buscar_secuencia(-1,S);
 		}
-		// Rulo: Si el próximo caracter está vacío lo imprime y sale de la función.
+		//Si el próximo caracter está vacío lo imprime y sale de la función.
 		else
 		{
 			*oss << P; 
@@ -30,14 +31,14 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 		}
 		
 	}
-	// Rulo: agrego este else para agarrar el caso que el archivo de entrada este vacío.
+	//Agrego este else para agarrar el caso que el archivo de entrada este vacío.
 	else
 	{
 		cout << MSJ_ARCHIVO_VACIO << endl;
 		return 1;
 	}
 
-	//Fede: Desde el tercer caracter hasta el final.	
+	//Desde el tercer caracter hasta el final.	
 	while( (S = (*iss).get()) != EOF )
 	{	
 		indice = dic.buscar_secuencia(P, S);
@@ -94,7 +95,7 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
         }         
             
         //if(diccionario.buscar_indice(indice_actual, &ubic) == true)
-        //Rulo: USo la posición de indice_actual para saber si esta o no en el diccionario
+        //USo la posición de indice_actual para saber si esta o no en el diccionario
         if(indice_actual <= dic.obtener_ult_())
 		{
 			

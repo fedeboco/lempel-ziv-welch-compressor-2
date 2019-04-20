@@ -5,8 +5,6 @@ using namespace std;
 #ifndef ARREGLO_DEF
 #define ARREGLO_DEF
 
-//-------------------- Definición de la clase arreglo -------------------//
-
 class arreglo
 {
 private:

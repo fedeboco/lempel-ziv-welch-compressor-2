@@ -4,7 +4,6 @@ using namespace std;
 #ifndef SECUENCIA_DEF
 #define SECUENCIA_DEF
 
-//-------------------- Declaración de la clase secuencia -------------------//
 class secuencia
 {
 private:
