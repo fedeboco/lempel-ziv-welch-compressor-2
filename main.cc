@@ -23,14 +23,13 @@
 #define MSJ_STD_INPUT "Entrada estándar."
 #define MSJ_DEFAULT_OP "Operación no especificada. Comprimiendo por defecto."
 #define MSJ_ERROR_OPENING "No se puede abrir "
-#define MSJ_ONE_OPERATION "ERROR: realice una operación a la vez."
+#define MSJ_ERROR_OPERATION "Invocación inválida."
 
 using namespace std;
 
 static void opt_input(string const &);
 static void opt_output(string const &);
-static void opt_compress(string const &);
-static void opt_decompress(string const &);
+static void opt_process(string const &);
 static void opt_help(string const &);
 
 // TABLA DE OPCIONES:
@@ -46,8 +45,7 @@ static void opt_help(string const &);
 static option_t options[] = {
 	{1, "i", "input", "-", opt_input, OPT_DEFAULT},
 	{1, "o", "output", "-", opt_output, OPT_DEFAULT},
-	{0, "c", "compress", NULL, opt_compress, OPT_DEFAULT},
-	{0, "d", "decompress", NULL, opt_decompress, OPT_DEFAULT},
+	{1, "p", "process", NULL, opt_process, OPT_DEFAULT},
 	{0, "h", "help", NULL, opt_help, OPT_DEFAULT},
 	{0, },
 };
@@ -113,38 +111,37 @@ static void opt_output(string const &arg)
 	}
 }
 
-static void opt_compress(string const &arg)
+static void opt_process(string const &arg)
 {
 
-	if( descomprimir_archivo )
+	if( arg == "compress" )
 	{
-		cout << MSJ_ONE_OPERATION;
+		comprimir_archivo = true;
+	}
+	else if( arg == "decompress" )
+	{
+		descomprimir_archivo = true;
+	}
+	else
+	{
+		cout << MSJ_ERROR_OPERATION << endl;
+		cout << "Documentación: ./tp0.exe --help" << endl;
 		exit(1);
 	}
-	comprimir_archivo = true;
-
-}
-
-static void opt_decompress(string const &arg)
-{
-
-	if( comprimir_archivo )
-	{
-		cout << MSJ_ONE_OPERATION;
-		exit(1);
-	}
-	descomprimir_archivo = true;
+		
 
 }
 
 static void opt_help(string const &arg)
 {
-	cout << "Compresión:\n" 
-		 << "cmdline -c [-i file] [-o file] \n"
-		 << "Descompresión:\n" 
-		 << "cmdline -d [-i file] [-o file] \n"
-		 << "Operación por defecto: Compresión."
-	     << endl;
+	cout << "\n<<<<COMPRESOR LZW V2>>>> Chapparro, Cuadrado, Pérez Boco.\n\n"
+		 << "COMPRIMIR: " 
+		 << "./tp0.exe -p compress [-i file] [-o file] \n"
+		 << "DESCOMPRIMIR: " 
+		 << "./tp0.exe -p decompress [-i file] [-o file] \n\n"
+		 << "De no especificarse archivo de entrada o salida, utiliza la línea de comandos.\n"
+		 << "De no especificarse una operación, comprime por defecto."
+	     << endl << endl;
 	exit(0);
 }
 
