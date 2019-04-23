@@ -6,8 +6,6 @@ using namespace std;
 #ifndef DICCIONARIO_DEF
 #define DICIONARIO_DEF
 
-//-------------------- Declaración de la clase diccionario -------------------//
-
 class diccionario
 {
 private:
@@ -24,13 +22,12 @@ public:
     void asignar_secuencia(const int, const secuencia &);
     void asignar_secuencia(const int pos, const int &, const char &);
     int obtener_P(const int) const;
+    int obtener_ult_();
     char obtener_S(const int) const;
     void resetear_diccionario();
     int obtener_indice(const int &);
-    bool buscar_indice(const int &, int *);
     void imprimir_indice (const int &, ostream *);
-    bool agregar_secuencia(const int &, const char &, int *);
-    bool cargar_ASCII (int = 255);
+    bool cargar_ASCII();
 
 };
 #endif

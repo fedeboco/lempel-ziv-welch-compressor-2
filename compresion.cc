@@ -1,155 +1,147 @@
 #include <iostream>
 #include "compresion.h"
 
-
 using namespace std;
 
 #define MSJ_ERROR_FOPEN "No se pudo abrir el archivo."
-#define MSJ_DIC_LLENO "Se lleno el diccionario, se procede a resetearlo"
+#define MSJ_ARCHIVO_VACIO "El archivo a tratar está vacío."
 
-/*bool cargarASCII(diccionario & dic)
-{
-    for(int i=0; i<=255; i++)
-		dic.asignar_secuencia(i,-1,char(i));
-    return 1;
-}*/
-
+//Comprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
 bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 {
     char S;
-	int buffer_size = 1000000;
-	diccionario buffer(buffer_size);
-
-	// para que no quede cargada al azar
-	dic.resetear_diccionario();
-
 	int P = -1;
 	int indice = -1;
 
-	//Para primeros 2 carácteres.
-	//El primero lo va a encontrar. El segundo no.
+	dic.resetear_diccionario();
+	//Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
 	if( (S = (*iss).get()) != EOF ){
+	
+		//Si viene de entrada estándar y recibo \n corto.
+		if( S == '\n' && iss == &cin )
+			return false;
 
-		 // busco primer caracter (encuentra)
-		indice = dic.buscar_secuencia(-1, S);
-		P = indice;
+		P = dic.buscar_secuencia(-1, S);
 		if( (S = (*iss).get()) != EOF ){
 
-			 //agrego primer secuencia (no encuentra)
+			//Si viene de entrada estándar y recibo \n corto.
+			if( S == '\n' && iss == &cin )
+			{
+				*oss << P << ',' << (int)'\n' << endl;
+				return false;
+			}
+
 			dic.agregar_secuencia(P, S);
-			//imprimo salida
-			*oss << P; 
-			//busco la posicion de S sin prefijo
+			*oss << P << ","; 
 			P = dic.buscar_secuencia(-1,S);
 
 		}
-
+		//Si el próximo caracter está vacío lo imprime y sale de la función.
+		else
+		{
+			*oss << P; 
+			return false;
+		}
+		
+	}
+	//Archivo de entrada vacío.
+	else
+	{
+		cout << MSJ_ARCHIVO_VACIO << endl;
+		return false;
 	}
 
-	int j = 0;
+	//Desde el tercer caracter hasta el final.	
 	while( (S = (*iss).get()) != EOF )
 	{	
-		indice = dic.buscar_secuencia(P, S); // busco secuencia
+		//Si viene de entrada estándar y recibo \n corto.
+		if( S == '\n' && iss == &cin )
+		{
+			*oss << P << ',' << (int)'\n' << endl;
+			return false;
+		}
 
-		//Si no la encuentro
+		indice = dic.buscar_secuencia(P, S);
 		if( indice == -1 )
 		{
-			//la agrego al final
 			dic.agregar_secuencia(P, S);
-			//agrego a buffer para imprimir
-			buffer.asignar_secuencia(j, P, S);
-			//busco la posicion de S sin prefijo
+			*oss << P << ",";
 			indice = dic.buscar_secuencia(-1,S);
-
-			j++;
-
 		}
 		P = indice;
+	}
+	*oss << P;
+	return false;
+}
 
-		//vacío buffer
-		if( j >= buffer_size )
+//Descomprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
+bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
+{  
+    //int ubic = 0;
+	int aux_u;
+	bool Pr_carac_flag = false;     
+    char indice_actual_aux;
+    int indice_anterior=0, indice_actual = 0;
+
+	//Para primer caracter. Leo hasta coma. Ignoro \n.
+    while( (indice_actual_aux=(*iss).get()) != ',' && !(indice_actual_aux == '\n' && iss == &cin ))
+    {		
+		if ( indice_actual_aux == EOF )
 		{
-			//*oss << buffer.obtener_P(i); //imprimo salida (1ero)
-			j = 0;
-			for(int i = 0; i < buffer_size; i++)
+			if( Pr_carac_flag == false )
 			{
-				*oss << "," << buffer.obtener_P(i); //imprimo salida
+				cout << MSJ_ARCHIVO_VACIO << endl;
+				return false;
+			}
+			else
+			{
+				break;
 			}
 		}
 
-
-	}
-
-	buffer.asignar_secuencia(j, P, S);
-
-	//vacío lo que quedó del buffer
-	for(int i = 0; i <= j; i++)
-	{
-		*oss << "," << buffer.obtener_P(i);
-	}
-
-    return 1;
-}
-
-bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
-{  
-    
-    int cont=255;
-    int ubic = 0, aux_u;
-           
-    if( /*(*iss).is_open()*/ 1 == 1){
-        char indice_actual_aux;
-        int indice_anterior=0,indice_actual = 0;
-        
-        while((indice_actual_aux=(*iss).get()) != ',')
-        {
-			int aux;
-            aux = int(indice_actual_aux)-48;
-            indice_actual = indice_actual * 10+ aux;
-        }
-        //*oss << "Primer Indice: " << indice_actual << " Corresponde a:" << dic.obtener_S(indice_actual) << endl;
-		*oss << dic.obtener_S(indice_actual);
-		//cout << "Primer Indice: " << indice_actual << " Corresponde a:" << dic.obtener_S(indice_actual) << endl;
-        while ((*iss).eof() == false)        
-        {
-            indice_anterior = indice_actual;
-            indice_actual=0;
-             while((indice_actual_aux=(*iss).get()) != ',' && (*iss).eof() == false)
-            {   
-				int aux;                
-                aux = int(indice_actual_aux)-48;
-                indice_actual = indice_actual * 10+ aux;
-            }         
-            
-            //if(diccionario.buscar_indice(indice_actual, &ubic) == true)
-            //Rulo: USo la posición de indice_actual para saber si esta o no en el diccionario
-            if (indice_actual <= cont) 
-            {   
-                
-                ubic = indice_actual;                                    
-                dic.imprimir_indice(ubic, oss);
-                aux_u = dic.obtener_indice(ubic);            
-               if((dic.agregar_secuencia(indice_anterior,aux_u,&cont))==false) 
-                {
-                    cout << MSJ_DIC_LLENO << endl;
-                }
-			}
-            else
-            {
-                aux_u = dic.obtener_indice(indice_anterior);  
-                if((dic.agregar_secuencia(indice_anterior,aux_u,&cont))==false) 
-                {
-                    cout << MSJ_DIC_LLENO << endl;
-                }
-                dic.imprimir_indice(cont, oss);
-            }
-        }
-        
+		Pr_carac_flag = true;
+		int aux;
+    	aux = int(indice_actual_aux) - 48; //48 por casteo (0 = 48 en la tabla ascii).
+    	indice_actual = indice_actual*10 + aux; //ejemplo: 432 = 10*( 10*(4) + 3 ) + 2; 
     }
-    else
+	*oss << dic.obtener_S(indice_actual);
+	//Si viene de entrada estándar y recibo \n corto.
+	if(indice_actual_aux == '\n'  && iss == &cin)
+		return false;
+
+	//Del segundo caracter hasta el final.
+    while ( (*iss).eof() == false )        
     {
-            cout << MSJ_ERROR_FOPEN;
+        indice_anterior = indice_actual;
+        indice_actual=0;
+		//Leo hasta coma. Ignoro \n.
+        while( (indice_actual_aux=(*iss).get()) != ',' && (*iss).eof() == false && !(indice_actual_aux == '\n' && iss == &cin ))
+        {   
+			int aux;                
+            aux = int(indice_actual_aux) - 48;
+            indice_actual = indice_actual*10 + aux;
+        }         
+            
+        //Uso la posición de indice_actual para saber si esta o no en el diccionario
+        if(indice_actual <= dic.obtener_ult_())
+		{
+		   	//ubic = indice_actual;                                    
+            dic.imprimir_indice(indice_actual, oss);
+            aux_u = dic.obtener_indice(indice_actual);            
+			dic.agregar_secuencia(indice_anterior,aux_u);
+		}
+        else
+        {
+            aux_u = dic.obtener_indice(indice_anterior);  
+			dic.agregar_secuencia(indice_anterior,aux_u);
+            dic.imprimir_indice(dic.obtener_ult_(), oss);
+        }
+
+		//Si viene de entrada estándar y recibo \n corto.
+		if( indice_actual_aux == '\n' && iss == &cin )
+			return false;
     }
-    
-	return 1;
+
+
+    return false;
 }

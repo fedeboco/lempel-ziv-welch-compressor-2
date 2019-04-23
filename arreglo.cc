@@ -4,9 +4,10 @@
 
 using namespace std;
 
-//-------------------- Definición de la clase arreglo -------------------//
+#define ERROR_SIZE_1 "Error: acceso inválido a posición "
+#define ERROR_SIZE_2 " en arreglo de tamaño " 
+#define ERROR_SIZE_CONSTRUCTOR "Tamaño inválido. No se pudo crear el arreglo."
 
-//Constructor
 arreglo::arreglo(const int & size)
 {
     if( size > 0 )
@@ -15,28 +16,47 @@ arreglo::arreglo(const int & size)
         size_ = new int;
         *size_ = size;
     }
-
+    else
+        cout << ERROR_SIZE_CONSTRUCTOR << endl;
 }
 
-//Destructor
 arreglo::~arreglo()
 {
-    delete[] dato_;
-    delete size_;
+    if( dato_ )
+        delete[] dato_;
+    if( size_ )
+        delete size_;
 }
 
-//Indexación
 secuencia & arreglo::operator[](const int pos)
 {
+    if( pos >= *size_ || pos < 0 )
+    {
+        cout    << ERROR_SIZE_1 
+                << pos 
+                << ERROR_SIZE_2 
+                << *size_ 
+                << '.' 
+                << endl;
+    }
     return dato_[pos];
 }
 
-secuencia & arreglo::get_dato(const int pos)
+secuencia & arreglo::obtener_dato(const int pos)
 {
+    if( pos >= *size_ || pos < 0 )
+    {
+        cout    << ERROR_SIZE_1 
+                << pos 
+                << ERROR_SIZE_2 
+                << *size_ 
+                << '.' 
+                << endl;
+    }
     return dato_[pos];
 }
 
-int arreglo::get_size() const
+int arreglo::obtener_size() const
 {
     return *size_;
 }
