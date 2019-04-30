@@ -3,7 +3,7 @@
 
 //Compresor y descompresor tipo LZW.
 //Autores: Chaparro Raúl Antonio, Cuadrado María Sol, Pérez Boco Federico Tomás.
-//Fecha: 25/4/2019
+//Fecha: 23/5/2019
 //95.12 - Algoritmos y Programación II - FIUBA
 
 #include <compresion.h>

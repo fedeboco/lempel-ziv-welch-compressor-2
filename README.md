@@ -1,5 +1,5 @@
-# tp0_algo2
-Este repositorio es para la realización del [TP0](https://drive.google.com/open?id=1HRHVCG4rCPjeaJc4PGqhb3bqituB64NW) de Algoritmos y programación II FIuba-1°C 2019.
+# tp1_algo2
+Este repositorio es para la realización del [tp1](https://drive.google.com/open?id=1HRHVCG4rCPjeaJc4PGqhb3bqituB64NW) de Algoritmos y programación II FIuba-1°C 2019.
 
 ## Git Workflow
 El flujo de trabajo que pretendemos es el propuesto por Vincent Driessen en [a successful git brnach model](https://nvie.com/posts/a-successful-git-branching-model/).
@@ -8,10 +8,10 @@ El flujo de trabajo que pretendemos es el propuesto por Vincent Driessen en [a s
     Contiene la última versión estable.
     Cuando se realiza un release (ver **release** debajo) taguear de la sigueinte forma.
     
-    > git tag -a TP0_1.0 -m "Comentario adicional 
+    > git tag -a tp1_1.0 -m "Comentario adicional 
     
     _Cómo taguear:_
-    - **tp0** : hace referencia al tp en si.
+    - **tp1** : hace referencia al tp en si.
     - **1.0** : hace referencia a la versión del TP.
 * **develop**  
     En esta rama se agregan cambios incrementales, bugs o mejoras, hasta que se considera que es el momento de hacer una release nueva.   
@@ -19,12 +19,12 @@ El flujo de trabajo que pretendemos es el propuesto por Vincent Driessen en [a s
 * **Release_xx**  
     Se utiliza para renombrar archivos que contienen en su nombre algún indicador de la versión de release.  
     Por ejemplo:
-    - **Nombre inicial**: tp0_1.0
-    - **Nombre final**: tp0_1.1
+    - **Nombre inicial**: tp1_1.0
+    - **Nombre final**: tp1_1.1
 * **Issue_xx**  
     En estas ramas se implementan mejoras o correcciones de bugs.  
     El *flow* es el siguiente:  
-    1. Se agrega una *issue* [aca](https://github.com/fedeboco/tp0_algo2/issues), donde se describe el tipo  :negative_squared_cross_mark: Bug o Mejora  :white_check_mark:.  
+    1. Se agrega una *issue* [aca](https://github.com/fedeboco/tp1_algo2/issues), donde se describe el tipo  :negative_squared_cross_mark: Bug o Mejora  :white_check_mark:.  
       _ Si es una mejora, agregar breve descripción, qués lo que se espera modificar, posible forma de implementación.  
       _ Si es un bug, describirlo, explicar los pasos para repoducioerlo, cuál es el funcionamiento esperado y cual es el que sucede.  
     2. Asignar la issue a la persona encargada.  
