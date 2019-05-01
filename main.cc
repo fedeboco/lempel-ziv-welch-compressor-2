@@ -150,6 +150,7 @@ int main(int argc, char * const argv[])
 	cmdline cmdl(options);	// Objeto tipo option_t (struct) declarado globalmente.
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline.
 
+
 	//Descompresión.
 	if( descomprimir_archivo && !comprimir_archivo )
 	{

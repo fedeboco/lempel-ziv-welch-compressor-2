@@ -1,5 +1,5 @@
 #include <iostream>
-#include "secuencia.h"
+#include "simbolo.h"
 using namespace std;
 
 #ifndef ARREGLO_DEF
@@ -8,16 +8,16 @@ using namespace std;
 class arreglo
 {
 private:
-    secuencia * dato_;
+    simbolo * dato_;
     int * size_;
-    int ult_;
+    unsigned short ult_;
 
 public:
     arreglo(const int &);
     ~arreglo();
     
-    secuencia & operator[](const int);
-    secuencia & obtener_dato(const int);
+    simbolo & operator[](const unsigned short);
+    simbolo & obtener_dato(const unsigned short);
     int obtener_size() const;
 
 

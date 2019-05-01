@@ -1,6 +1,6 @@
 #include <iostream>
 #include "arreglo.h"
-#include "secuencia.h"
+#include "simbolo.h"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ arreglo::arreglo(const int & size)
 {
     if( size > 0 )
     {
-        dato_ = new secuencia[size];
+        dato_ = new simbolo[size];
         size_ = new int;
         *size_ = size;
     }
@@ -28,7 +28,7 @@ arreglo::~arreglo()
         delete size_;
 }
 
-secuencia & arreglo::operator[](const int pos)
+simbolo & arreglo::operator[](const unsigned short pos)
 {
     if( pos >= *size_ || pos < 0 )
     {
@@ -42,7 +42,7 @@ secuencia & arreglo::operator[](const int pos)
     return dato_[pos];
 }
 
-secuencia & arreglo::obtener_dato(const int pos)
+simbolo & arreglo::obtener_dato(const unsigned short pos)
 {
     if( pos >= *size_ || pos < 0 )
     {

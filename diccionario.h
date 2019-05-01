@@ -1,6 +1,6 @@
 #include <iostream>
 #include "arreglo.h"
-#include "secuencia.h"
+#include "simbolo.h"
 using namespace std;
 
 #ifndef DICCIONARIO_DEF
@@ -11,22 +11,22 @@ class diccionario
 private:
     arreglo * dic_;
     int * size_;                               
-    int ult_;
+    unsigned short ult_;
 
 public:
-    secuencia & obtener_secuencia(const int);
+    simbolo & obtener_simbolo(const unsigned short);
     diccionario(const int &);
     ~diccionario();
-    const int buscar_secuencia(const int &, const char &);
-    int agregar_secuencia(const int &, const char &);
-    void asignar_secuencia(const int, const secuencia &);
-    void asignar_secuencia(const int pos, const int &, const char &);
-    int obtener_P(const int) const;
-    int obtener_ult_();
-    char obtener_S(const int) const;
+    const unsigned short buscar_simbolo(const unsigned short &, const char &);
+    unsigned short agregar_simbolo(const unsigned short &, const char &);
+    void asignar_simbolo(const unsigned short, const simbolo &);
+    void asignar_simbolo(const unsigned short, const unsigned short &, const char &);
+    unsigned short obtener_P(const unsigned short) const;
+    unsigned short obtener_ult_();
+    char obtener_S(const unsigned short) const;
     void resetear_diccionario();
-    int obtener_indice(const int &);
-    void imprimir_indice (const int &, ostream *);
+    unsigned short obtener_indice(const unsigned short &);
+    void imprimir_indice (const unsigned short &, ostream *);
     bool cargar_ASCII();
 
 };

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "compresion.h"
 
+#define NULO 65535
+
 using namespace std;
 
 #define MSJ_ERROR_FOPEN "No se pudo abrir el archivo."
@@ -10,8 +12,8 @@ using namespace std;
 bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 {
     char S;
-	int P = -1;
-	int indice = -1;
+	unsigned short P = NULO;
+	unsigned short indice = NULO;
 
 	dic.resetear_diccionario();
 	//Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
@@ -21,7 +23,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 		if( S == '\n' && iss == &cin )
 			return false;
 
-		P = dic.buscar_secuencia(-1, S);
+		P = dic.buscar_simbolo(NULO, S);
 		if( (S = (*iss).get()) != EOF ){
 
 			//Si viene de entrada estándar y recibo \n corto.
@@ -31,9 +33,9 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 				return false;
 			}
 
-			dic.agregar_secuencia(P, S);
+			dic.agregar_simbolo(P, S);
 			*oss << P << ","; 
-			P = dic.buscar_secuencia(-1,S);
+			P = dic.buscar_simbolo(NULO,S);
 
 		}
 		//Si el próximo caracter está vacío lo imprime y sale de la función.
@@ -61,12 +63,12 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 			return false;
 		}
 
-		indice = dic.buscar_secuencia(P, S);
-		if( indice == -1 )
+		indice = dic.buscar_simbolo(P, S);
+		if( indice == NULO )
 		{
-			dic.agregar_secuencia(P, S);
+			dic.agregar_simbolo(P, S);
 			*oss << P << ",";
-			indice = dic.buscar_secuencia(-1,S);
+			indice = dic.buscar_simbolo(NULO,S);
 		}
 		P = indice;
 	}
@@ -77,11 +79,10 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 //Descomprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
 bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 {  
-    //int ubic = 0;
-	int aux_u;
+	unsigned short aux_u;
 	bool Pr_carac_flag = false;     
     char indice_actual_aux;
-    int indice_anterior=0, indice_actual = 0;
+    unsigned short indice_anterior=0, indice_actual = 0;
 
 	//Para primer caracter. Leo hasta coma. Ignoro \n.
     while( (indice_actual_aux=(*iss).get()) != ',' && !(indice_actual_aux == '\n' && iss == &cin ))
@@ -100,8 +101,8 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 		}
 
 		Pr_carac_flag = true;
-		int aux;
-    	aux = int(indice_actual_aux) - 48; //48 por casteo (0 = 48 en la tabla ascii).
+		unsigned short aux;
+    	aux = (unsigned short)(indice_actual_aux) - 48; //48 por casteo (0 = 48 en la tabla ascii).
     	indice_actual = indice_actual*10 + aux; //ejemplo: 432 = 10*( 10*(4) + 3 ) + 2; 
     }
 	*oss << dic.obtener_S(indice_actual);
@@ -117,8 +118,8 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 		//Leo hasta coma. Ignoro \n.
         while( (indice_actual_aux=(*iss).get()) != ',' && (*iss).eof() == false && !(indice_actual_aux == '\n' && iss == &cin ))
         {   
-			int aux;                
-            aux = int(indice_actual_aux) - 48;
+			unsigned short aux;                
+            aux = (unsigned short)(indice_actual_aux) - 48;
             indice_actual = indice_actual*10 + aux;
         }         
             
@@ -128,12 +129,12 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 		   	//ubic = indice_actual;                                    
             dic.imprimir_indice(indice_actual, oss);
             aux_u = dic.obtener_indice(indice_actual);            
-			dic.agregar_secuencia(indice_anterior,aux_u);
+			dic.agregar_simbolo(indice_anterior,aux_u);
 		}
         else
         {
             aux_u = dic.obtener_indice(indice_anterior);  
-			dic.agregar_secuencia(indice_anterior,aux_u);
+			dic.agregar_simbolo(indice_anterior,aux_u);
             dic.imprimir_indice(dic.obtener_ult_(), oss);
         }
 
