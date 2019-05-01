@@ -21,7 +21,14 @@ public:
     unsigned short agregar_simbolo(const unsigned short &, const char &);
     void asignar_simbolo(const unsigned short, const simbolo &);
     void asignar_simbolo(const unsigned short, const unsigned short &, const char &);
+    void asignar_simbolo(   const unsigned short, 
+                            const unsigned short &, 
+                            const char &,
+                            const unsigned short &, 
+                            const unsigned short &);
     unsigned short obtener_P(const unsigned short) const;
+    unsigned short obtener_L(const unsigned short) const;
+    unsigned short obtener_R(const unsigned short) const;
     unsigned short obtener_ult_();
     char obtener_S(const unsigned short) const;
     void resetear_diccionario();

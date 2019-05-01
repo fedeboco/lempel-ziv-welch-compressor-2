@@ -51,6 +51,18 @@ void diccionario::asignar_simbolo(const unsigned short pos, const unsigned short
     (*dic_)[pos].asignarS(S);
 }
 
+void diccionario::asignar_simbolo(  const unsigned short pos, 
+                                    const unsigned short & P, 
+                                    const char & S,
+                                    const unsigned short & L, 
+                                    const unsigned short & R)
+{
+    (*dic_)[pos].asignarP(P);
+    (*dic_)[pos].asignarS(S);
+    (*dic_)[pos].asignarL(L);
+    (*dic_)[pos].asignarR(R);
+}
+
 //Obtiene el prefijo de cierta posición del diccionario.
 unsigned short diccionario::obtener_P(const unsigned short pos) const
 {
@@ -63,6 +75,18 @@ char diccionario::obtener_S(const unsigned short pos) const
     return (*dic_)[pos].obtenerS();
 }
 
+//Obtiene el primero/izquierdo de cierta posición del diccionario.
+unsigned short diccionario::obtener_L(const unsigned short pos) const
+{
+    return (*dic_)[pos].obtenerL();
+}
+
+//Obtiene el siguiente/derecho de cierta posición del diccionario.
+unsigned short diccionario::obtener_R(const unsigned short pos) const
+{
+    return (*dic_)[pos].obtenerR();
+}
+
 //Obtiene la ultima posición
 unsigned short diccionario::obtener_ult_()
 {
@@ -72,8 +96,23 @@ unsigned short diccionario::obtener_ult_()
 //Vacía el diccionario.
 void diccionario::resetear_diccionario()
 {
+    this -> cargar_ASCII();
     ult_ = 255;
 }
+
+//Asigna un ushort P (Prefijo) y un char S (Sufijo) al simbolo de la primera posición vacía del diccionario.
+// unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char & S)
+// {
+//     int size = *size_;
+//     if( ult_ >= size - 2){
+//         cout << MSJ_DIC_LLENO << endl;
+//         this -> resetear_diccionario();
+//     }
+//     this -> asignar_simbolo(ult_ + 1, P, S);
+//     ult_++;
+    
+//     return ult_;
+// }
 
 //Asigna un ushort P (Prefijo) y un char S (Sufijo) al simbolo de la primera posición vacía del diccionario.
 unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char & S)
@@ -83,22 +122,34 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
         cout << MSJ_DIC_LLENO << endl;
         this -> resetear_diccionario();
     }
-    this -> asignar_simbolo(ult_ + 1, P, S);
     ult_++;
-    
+    asignar_simbolo(ult_,P,S,NULO,obtener_L(P));
+    (*dic_)[P].asignarL(ult_);
     return ult_;
 }
 
 //Búsqueda del primer simbolo que coincida con el prefijo y el sufijo suministrado. Retorna índice.
+// const unsigned short diccionario::buscar_simbolo(const unsigned short & P, const char & S)
+// {
+//     int size = *size_;
+//     for( int i = 0; i >= 0 && i <= size && i <= ult_; i++ )
+//     {
+//         if( this->obtener_P(i) == P && this->obtener_S(i) == S )
+//             return i;
+//     }
+//     return NULO;
+// }
+
 const unsigned short diccionario::buscar_simbolo(const unsigned short & P, const char & S)
 {
-    int size = *size_;
-    for( int i = 0; i >= 0 && i <= size && i <= ult_; i++ )
-    {
-        if( this->obtener_P(i) == P && this->obtener_S(i) == S )
-            return i;
-    }
-    return NULO;
+    unsigned short indice = NULO;
+
+    if( P == NULO )
+        return NULO;// (unsigned short)S;
+    indice = this -> obtener_L( P );
+    while( indice != NULO && !( obtener_P( indice )==P && obtener_S( indice )==S ) )
+        indice = obtener_R( indice );
+    return indice;
 }
 
 //Devuelve el primer caracter del diccionario de la ubicación buscada.
@@ -139,7 +190,7 @@ void diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss)
 bool diccionario::cargar_ASCII()
 {
     for(int i=0; i<=255; i++)
-	    this -> asignar_simbolo(i,NULO,char(i));
+	    this -> asignar_simbolo(i,NULO,char(i),NULO,NULO);
     ult_ = 255;        
     return true;
 }

@@ -71,7 +71,7 @@ static void opt_input(string const &arg)
 	}
 	else 
 	{
-		ifs.open(arg.c_str(), ios::in);
+		ifs.open(arg.c_str(), ios::in | ios::binary);
 		iss = &ifs;
 	}
 
@@ -196,7 +196,6 @@ int main(int argc, char * const argv[])
 		}
 		cout << MSJ_OK_COMP << endl;
 	}
-
 	ifs.close();
 	ofs.close();
 	return 0;
