@@ -2,5 +2,5 @@
 #include "diccionario.h"
 using namespace std;
 
-bool comprimir(diccionario &, istream *, ostream *);
+bool comprimir(diccionario &, istream *, ostream *, ptr_busqueda);
 bool descomprimir(diccionario &, istream *, ostream *);

@@ -6,6 +6,10 @@ using namespace std;
 #ifndef DICCIONARIO_DEF
 #define DICIONARIO_DEF
 
+class diccionario;
+
+typedef const unsigned short (diccionario::*ptr_busqueda)(const unsigned short &, const char &);
+
 class diccionario
 {
 private:
@@ -17,7 +21,7 @@ public:
     simbolo & obtener_simbolo(const unsigned short);
     diccionario(const int &);
     ~diccionario();
-    const unsigned short buscar_simbolo(const unsigned short &, const char &);
+    const unsigned short buscar_simbolo(const unsigned short &, const char &, ptr_busqueda);
     const unsigned short buscar_simbolo_lineal(const unsigned short &, const char &);
     const unsigned short buscar_simbolo_lista(const unsigned short &, const char &);
     unsigned short agregar_simbolo(const unsigned short &, const char &);

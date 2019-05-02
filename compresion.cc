@@ -9,7 +9,7 @@ using namespace std;
 #define MSJ_ARCHIVO_VACIO "El archivo a tratar está vacío."
 
 //Comprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
-bool comprimir(diccionario & dic, istream * iss, ostream *oss)
+bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busqueda)
 {
     char S;
 	unsigned short P = NULO;
@@ -63,7 +63,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 			*oss << P << ',' << (int)'\n' << endl;
 			return false;
 		}
-		indice = dic.buscar_simbolo(P, S);
+		indice = dic.buscar_simbolo(P, S, busqueda);
 		if( indice == NULO )
 		{
 			dic.agregar_simbolo(P, S);

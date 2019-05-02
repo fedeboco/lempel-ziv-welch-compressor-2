@@ -101,20 +101,6 @@ void diccionario::resetear_diccionario()
 }
 
 //Asigna un ushort P (Prefijo) y un char S (Sufijo) al simbolo de la primera posición vacía del diccionario.
-// unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char & S)
-// {
-//     int size = *size_;
-//     if( ult_ >= size - 2){
-//         cout << MSJ_DIC_LLENO << endl;
-//         this -> resetear_diccionario();
-//     }
-//     this -> asignar_simbolo(ult_ + 1, P, S);
-//     ult_++;
-    
-//     return ult_;
-// }
-
-//Asigna un ushort P (Prefijo) y un char S (Sufijo) al simbolo de la primera posición vacía del diccionario.
 unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char & S)
 {
     int size = *size_;
@@ -129,11 +115,9 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
 }
 
 //Selecciona el método de búsqueda con punteros a funciones
-const unsigned short diccionario::buscar_simbolo(const unsigned short & P, const char & S)
+const unsigned short diccionario::buscar_simbolo(const unsigned short & P, const char & S, ptr_busqueda busqueda)
 {
-    typedef const unsigned short (diccionario::*ptr_busqueda)(const unsigned short &, const char &);
-    ptr_busqueda ptr = &diccionario::buscar_simbolo_lineal;
-    return (this->*ptr)(P,S);
+    return (this->*busqueda)(P,S);
 }
 
 //Búsqueda del primer simbolo que coincida con el prefijo y el sufijo suministrado. Retorna índice.

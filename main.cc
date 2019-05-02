@@ -30,6 +30,7 @@ using namespace std;
 static void opt_input(string const &);
 static void opt_output(string const &);
 static void opt_process(string const &);
+static void opt_method(string const &);
 static void opt_help(string const &);
 
 // TABLA DE OPCIONES:
@@ -46,6 +47,7 @@ static option_t options[] = {
 	{1, "i", "input", "-", opt_input, OPT_DEFAULT},
 	{1, "o", "output", "-", opt_output, OPT_DEFAULT},
 	{1, "p", "process", NULL, opt_process, OPT_DEFAULT},
+	{1, "m", "method", NULL, opt_method, OPT_DEFAULT},
 	{0, "h", "help", NULL, opt_help, OPT_DEFAULT},
 	{0, },
 };
@@ -57,7 +59,9 @@ static fstream ofs;
 
 static bool comprimir_archivo = false;
 static bool descomprimir_archivo = false;
+static ptr_busqueda busqueda =  &diccionario::buscar_simbolo_lineal;;
 
+//static typedef const unsigned short (diccionario::*ptr_busqueda)(const unsigned short &, const char &);
 /*****************************************************/
 
 static void opt_input(string const &arg)
@@ -132,6 +136,21 @@ static void opt_process(string const &arg)
 
 }
 
+static void opt_method(string const &arg)
+{
+	if( arg == "list" )
+		busqueda = &diccionario::buscar_simbolo_lista;
+	else if( arg == "normal" )
+		busqueda = &diccionario::buscar_simbolo_lineal;
+	else if( arg == "tree" )
+		cout << "no implementado todavia JE" << endl;
+	else
+	{
+		cout << "Búsqueda normal seleccionada por defecto." << endl;
+		busqueda = &diccionario::buscar_simbolo_lineal;
+	}
+}
+
 static void opt_help(string const &arg)
 {
 	cout << "\n<<<<COMPRESOR LZW V2>>>> Chapparro, Cuadrado, Pérez Boco.\n\n"
@@ -169,7 +188,7 @@ int main(int argc, char * const argv[])
 	{
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
-		if( comprimir(dic, iss, oss) )
+		if( comprimir(dic, iss, oss, busqueda) )
 		{
 			cout << MSJ_ERROR_COMP << endl;
 			return 1;
@@ -189,7 +208,7 @@ int main(int argc, char * const argv[])
 		cout << MSJ_DEFAULT_OP << endl;
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
-		if( comprimir(dic, iss, oss) )
+		if( comprimir(dic, iss, oss, busqueda) )
 		{
 			cout << MSJ_ERROR_COMP << endl;
 			return 1;
