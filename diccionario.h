@@ -18,6 +18,8 @@ public:
     diccionario(const int &);
     ~diccionario();
     const unsigned short buscar_simbolo(const unsigned short &, const char &);
+    const unsigned short buscar_simbolo_lineal(const unsigned short &, const char &);
+    const unsigned short buscar_simbolo_lista(const unsigned short &, const char &);
     unsigned short agregar_simbolo(const unsigned short &, const char &);
     void asignar_simbolo(const unsigned short, const simbolo &);
     void asignar_simbolo(const unsigned short, const unsigned short &, const char &);

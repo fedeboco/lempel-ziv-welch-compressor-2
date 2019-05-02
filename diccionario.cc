@@ -128,22 +128,29 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
     return ult_;
 }
 
-//Búsqueda del primer simbolo que coincida con el prefijo y el sufijo suministrado. Retorna índice.
-// const unsigned short diccionario::buscar_simbolo(const unsigned short & P, const char & S)
-// {
-//     int size = *size_;
-//     for( int i = 0; i >= 0 && i <= size && i <= ult_; i++ )
-//     {
-//         if( this->obtener_P(i) == P && this->obtener_S(i) == S )
-//             return i;
-//     }
-//     return NULO;
-// }
-
+//Selecciona el método de búsqueda con punteros a funciones
 const unsigned short diccionario::buscar_simbolo(const unsigned short & P, const char & S)
 {
-    unsigned short indice = NULO;
+    typedef const unsigned short (diccionario::*ptr_busqueda)(const unsigned short &, const char &);
+    ptr_busqueda ptr = &diccionario::buscar_simbolo_lineal;
+    return (this->*ptr)(P,S);
+}
 
+//Búsqueda del primer simbolo que coincida con el prefijo y el sufijo suministrado. Retorna índice.
+const unsigned short diccionario::buscar_simbolo_lineal(const unsigned short & P, const char & S)
+{
+    int size = *size_;
+    for( int i = 0; i >= 0 && i <= size && i <= ult_; i++ )
+    {
+        if( this->obtener_P(i) == P && this->obtener_S(i) == S )
+            return i;
+    }
+    return NULO;
+}
+
+const unsigned short diccionario::buscar_simbolo_lista(const unsigned short & P, const char & S)
+{
+    unsigned short indice = NULO;
     if( P == NULO )
         return NULO;// (unsigned short)S;
     indice = this -> obtener_L( P );

@@ -23,7 +23,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 		if( S == '\n' && iss == &cin )
 			return false;
 
-		P = ((unsigned char)S);
+		P = (unsigned char)S;
 		if( (S = (*iss).get()) != EOF ){
 
 			//Si viene de entrada estándar y recibo \n corto.
@@ -35,7 +35,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 
 			dic.agregar_simbolo(P, S);
 			*oss << P << ","; 
-			P = ((unsigned char)S);
+			P = (unsigned char)S;
 
 		}
 		//Si el próximo caracter está vacío lo imprime y sale de la función.
@@ -68,7 +68,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss)
 		{
 			dic.agregar_simbolo(P, S);
 			*oss << P << ",";
-			indice = ((unsigned char)S);
+			indice = (unsigned char)S;
 		}
 
 		P = indice;
