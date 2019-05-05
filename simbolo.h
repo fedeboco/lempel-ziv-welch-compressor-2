@@ -11,6 +11,7 @@ private:
     char * S_; //sufijo
     unsigned short * L_; //primero o izquierda
     unsigned short * R_; //siguiente o derecha
+    unsigned short *PRI_;
 
 public:
     simbolo();
@@ -26,7 +27,9 @@ public:
     void asignarL(const unsigned short &);
     void asignarR(const unsigned short &);
     void asignarLR(const unsigned short &, const unsigned short &);
+    void asignarPRI(const unsigned short &);
     unsigned short obtenerL();
     unsigned short obtenerR();
+    unsigned short obtenerPri();
 };
 #endif

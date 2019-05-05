@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 
 #define MAX_VECTOR 65536
 
@@ -143,7 +144,8 @@ static void opt_method(string const &arg)
 	else if( arg == "normal" )
 		busqueda = &diccionario::buscar_simbolo_lineal;
 	else if( arg == "tree" )
-		cout << "no implementado todavia JE" << endl;
+		busqueda = &diccionario::buscar_simbolo_arbol;
+		//cout << "no implementado todavia JE" << endl;
 	else
 	{
 		cout << "Búsqueda normal seleccionada por defecto." << endl;
@@ -173,6 +175,8 @@ int main(int argc, char * const argv[])
 	//Descompresión.
 	if( descomprimir_archivo && !comprimir_archivo )
 	{
+		unsigned t0,t1;
+		t0=clock();
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
 		if( descomprimir(dic, iss, oss) )
@@ -180,12 +184,17 @@ int main(int argc, char * const argv[])
 			cout << MSJ_ERROR_DESCOMP << endl;
 			return 1;
 		}
+		t1 = clock();
+		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		cout << MSJ_OK_DESCOMP << endl;
+		cout << "Tiempo de compresión: " << time << endl;
 	}
 
 	//Compresión.
 	else if( !descomprimir_archivo && comprimir_archivo )
 	{
+		unsigned t0,t1;
+		t0=clock();
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
 		if( comprimir(dic, iss, oss, busqueda) )
@@ -193,7 +202,10 @@ int main(int argc, char * const argv[])
 			cout << MSJ_ERROR_COMP << endl;
 			return 1;
 		}
+		t1 = clock();
+		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		cout << MSJ_OK_COMP << endl;
+		cout << "Tiempo de descompresión: " << time << endl;
 	}
 
 	//Compresión y descompresión indefinido.
