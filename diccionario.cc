@@ -51,18 +51,7 @@ void diccionario::asignar_simbolo(const unsigned short pos, const unsigned short
     (*dic_)[pos].asignarS(S);
 }
 
-/*void diccionario::asignar_simbolo(  const unsigned short pos, 
-                                    const unsigned short & P, 
-                                    const char & S,
-                                    const unsigned short & L, 
-                                    const unsigned short & R)
-{
-    (*dic_)[pos].asignarP(P);
-    (*dic_)[pos].asignarS(S);
-    (*dic_)[pos].asignarL(L);
-    (*dic_)[pos].asignarR(R);
-}*/
-
+//Asigna simbolo dedicado al método de árbol
 void diccionario::asignar_simbolo(  const unsigned short pos, const unsigned short & P, const char & S, const unsigned short & L, const unsigned short & R, const unsigned short & PRI)
 {
     (*dic_)[pos].asignarP(P);
@@ -72,16 +61,19 @@ void diccionario::asignar_simbolo(  const unsigned short pos, const unsigned sho
     (*dic_)[pos].asignarPRI(PRI);
 }
 
+//Asigna elemento a la posicion PRI en la posición pos
 void diccionario::asignar_PRI(const unsigned short & pos, const unsigned short & PRI)
 {
     (*dic_)[pos].asignarPRI(PRI);
 }
 
+//Asigna L en la posición pos
 void diccionario::asignar_L(const unsigned short & pos, const unsigned short & L)
 {
     (*dic_)[pos].asignarL(L);
 }
 
+//Asigna R en la posición pos
 void diccionario::asignar_R(const unsigned short & pos, const unsigned short & R)
 {
     (*dic_)[pos].asignarR(R);
@@ -116,6 +108,7 @@ unsigned short diccionario::obtener_ult_()
     return ult_;
 }
 
+//Obtiene el elemento "primero" de la posición pos
 unsigned short diccionario::obtener_pri(const unsigned short pos) const
 {
     return (*dic_)[pos].obtenerPri();
@@ -142,6 +135,7 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
     return ult_;
 }
 
+//Agrega simbolo dedicado al metodo de arbol
 unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char & S, const unsigned short & L, const unsigned short & R, const unsigned short & PRI)
 {
     int size = *size_;
@@ -151,14 +145,7 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
     }
     ult_++;
     asignar_simbolo(ult_,P,S,L,R,PRI);
-    //(*dic_)[P].asignarPRI(ult_);
     return ult_;
-}
-
-//Selecciona el método de búsqueda con punteros a funciones
-const unsigned short diccionario::buscar_simbolo(const unsigned short & P, const char & S, ptr_busqueda busqueda)
-{
-    return (this->*busqueda)(P,S);
 }
 
 //Búsqueda del primer simbolo que coincida con el prefijo y el sufijo suministrado. Retorna índice.
@@ -173,17 +160,19 @@ const unsigned short diccionario::buscar_simbolo_lineal(const unsigned short & P
     return NULO;
 }
 
+//Busca simbolo armando una lista con dic[pos] = [P_, S_, primero=L_, siguiente=R_]
 const unsigned short diccionario::buscar_simbolo_lista(const unsigned short & P, const char & S)
 {
     unsigned short indice = NULO;
     if( P == NULO )
-        return NULO;// (unsigned short)S;
+        return NULO;
     indice = this -> obtener_L( P );
     while( indice != NULO && !( obtener_P( indice )==P && obtener_S( indice )==S ) )
         indice = obtener_R( indice );
     return indice;
 }
 
+//Busca simbolo armando un arbol binario de busqueda sin balancear
 const unsigned short diccionario::buscar_simbolo_arbol(const unsigned short & P, const char & S)
 {
     char S_aux;
@@ -201,7 +190,7 @@ const unsigned short diccionario::buscar_simbolo_arbol(const unsigned short & P,
         if ( obtener_pri(P) == NULO)
         {
             agregar_simbolo(P,S,NULO,NULO,NULO);
-            asignar_PRI(P,ult_);                    //(*dic_)[P].asignarPRI(ult_);
+            asignar_PRI(P,ult_);
             return NULO;        
         }
         else
@@ -219,7 +208,7 @@ const unsigned short diccionario::buscar_simbolo_arbol(const unsigned short & P,
                     if(this -> obtener_L(pos) == NULO)
                     {
                         agregar_simbolo(P,S,NULO,NULO,NULO);
-                        asignar_L(pos,ult_);        //(*dic_)[pos].asignarL(ult_); 
+                        asignar_L(pos,ult_);
                         return NULO;
                     }
                     else
@@ -233,7 +222,7 @@ const unsigned short diccionario::buscar_simbolo_arbol(const unsigned short & P,
                     if(this -> obtener_R(pos) == NULO)
                     {
                         agregar_simbolo(P,S,NULO,NULO,NULO);
-                        asignar_R(pos,ult_);           //(*dic_)[pos].asignarR(ult_);
+                        asignar_R(pos,ult_);
                         return NULO;    
                     }
                     else

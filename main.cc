@@ -25,6 +25,8 @@
 #define MSJ_DEFAULT_OP "Operación no especificada. Comprimiendo por defecto."
 #define MSJ_ERROR_OPENING "No se puede abrir "
 #define MSJ_ERROR_OPERATION "Invocación inválida."
+#define MSJ_COMP_TIME "Tiempo de compresión: "
+#define MSJ_DESCOMP_TIME "Tiempo de descompresión: "
 
 using namespace std;
 
@@ -145,7 +147,6 @@ static void opt_method(string const &arg)
 		busqueda = &diccionario::buscar_simbolo_lineal;
 	else if( arg == "tree" )
 		busqueda = &diccionario::buscar_simbolo_arbol;
-		//cout << "no implementado todavia JE" << endl;
 	else
 	{
 		cout << "Búsqueda normal seleccionada por defecto." << endl;
@@ -187,7 +188,7 @@ int main(int argc, char * const argv[])
 		t1 = clock();
 		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		cout << MSJ_OK_DESCOMP << endl;
-		cout << "Tiempo de compresión: " << time << endl;
+		cout << MSJ_DESCOMP_TIME << time << endl;
 	}
 
 	//Compresión.
@@ -205,7 +206,7 @@ int main(int argc, char * const argv[])
 		t1 = clock();
 		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		cout << MSJ_OK_COMP << endl;
-		cout << "Tiempo de descompresión: " << time << endl;
+		cout << MSJ_COMP_TIME << time << endl;
 	}
 
 	//Compresión y descompresión indefinido.

@@ -35,12 +35,12 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 			if (busqueda !=  &diccionario::buscar_simbolo_arbol)
 				dic.agregar_simbolo(P, S);
 			else
-				dic.buscar_simbolo(P,S,busqueda);
+				(dic.*busqueda)(P, S); /*si es arbol, agrego en busqueda*/
 			*oss << P << ","; 
 			P = (unsigned char)S;
 
 		}
-		//Si el próximo caracter está vacío lo imprime y sale de la función.
+		//Si el próximo caracter es EOF lo imprime y sale de la función.
 		else
 		{
 			*oss << P; 
@@ -65,7 +65,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 			*oss << P << ',' << (int)'\n' << endl;
 			return false;
 		}
-		indice = dic.buscar_simbolo(P, S, busqueda);
+		indice = (dic.*busqueda)(P, S);
 		if( indice == NULO )
 		{
 			// Si se elige el método de árbol, se agrega el simbolo en la busqueda.

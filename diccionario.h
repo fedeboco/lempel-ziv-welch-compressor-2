@@ -21,7 +21,6 @@ public:
     simbolo & obtener_simbolo(const unsigned short);
     diccionario(const int &);
     ~diccionario();
-    const unsigned short buscar_simbolo(const unsigned short &, const char &, ptr_busqueda);
     const unsigned short buscar_simbolo_lineal(const unsigned short &, const char &);
     const unsigned short buscar_simbolo_lista(const unsigned short &, const char &);
     const unsigned short buscar_simbolo_arbol(const unsigned short & , const char & );
@@ -29,11 +28,6 @@ public:
     unsigned short agregar_simbolo(const unsigned short & , const char & , const unsigned short & , const unsigned short & , const unsigned short & ); //Sobrecargo esta función, la idea es fucionarla con la de arriba
     void asignar_simbolo(const unsigned short, const simbolo &);
     void asignar_simbolo(const unsigned short, const unsigned short &, const char &);
-   /* void asignar_simbolo(   const unsigned short, 
-                            const unsigned short &, 
-                            const char &,
-                            const unsigned short &, 
-                            const unsigned short &);*/
     void asignar_simbolo(const unsigned short, const unsigned short &, const char &, const unsigned short &, const unsigned short &, const unsigned short &); //sobrecargo esta función, la idea es fcionarla con la dearriba                        
     void asignar_PRI(const unsigned short &, const unsigned short & );
     void asignar_L(const unsigned short &, const unsigned short & );
