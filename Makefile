@@ -10,7 +10,7 @@ clean:
 	$(RM) -vf *.o *.exe *.t *.out *.err
 
 valgrind: 
-	for numero in 0 1 2 3 4 5 6 7 8 9; do \
+	for numero in 0 1 2 3 4 5 6 7 8 9 10; do \
 	echo \ ;\
 	echo TEST NÚMERO $$numero ----------------------;\
 	valgrind ./tp1.exe -p compress -i "./tests/entrada$${numero}.txt" -o "./tests/salida$${numero}.txt" ;\
@@ -19,7 +19,7 @@ valgrind:
 	done
 	
 test:
-	for numero in 1 2 3 4 5 6 7 8 9; do \
+	for numero in 1 2 3 4 5 6 7 8 9 10; do \
 	echo \ ;\
 	echo TEST NÚMERO $$numero ----------------------;\
 	./tp1.exe -p compress -i "./tests/entrada$${numero}.txt" -o "./tests/salida$${numero}.txt" ;\
@@ -29,7 +29,7 @@ test:
 	done
 
 test_list:
-	for numero in 1 2 3 4 5 6 7 8 9; do \
+	for numero in 1 2 3 4 5 6 7 8 9 10; do \
 	echo \ ;\
 	echo TEST NÚMERO $$numero ----------------------;\
 	./tp1.exe -p compress -i "./tests/entrada$${numero}.txt" -o "./tests/salida$${numero}.txt" -m list;\
@@ -39,7 +39,7 @@ test_list:
 	done
 
 test_tree:
-	for numero in 1 2 3 4 5 6 7 8 9; do \
+	for numero in 1 2 3 4 5 6 7 8 9 10; do \
 	echo \ ;\
 	echo TEST NÚMERO $$numero ----------------------;\
 	./tp1.exe -p compress -i "./tests/entrada$${numero}.txt" -o "./tests/salida$${numero}.txt" -m tree;\

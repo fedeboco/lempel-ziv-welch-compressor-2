@@ -17,14 +17,14 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 
 	dic.resetear_diccionario();
 	//Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
-	if( (S = (*iss).get()) != EOF ){
+	if( (S = (*iss).get())==S && (*iss).eof() == false ){
 	
 		//Si viene de entrada estándar y recibo \n corto.
 		if( S == '\n' && iss == &cin )
 			return false;
 
 		P = (unsigned char)S;
-		if( (S = (*iss).get()) != EOF ){
+		if( (S = (*iss).get())==S && (*iss).eof() == false ){
 
 			//Si viene de entrada estándar y recibo \n corto.
 			if( S == '\n' && iss == &cin )
@@ -56,7 +56,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 	}
 
 	//Desde el tercer caracter hasta el final.	
-	while( (S = (*iss).get()) != EOF )
+	while( (S = (*iss).get())==S  && (*iss).eof() == false )
 	{	
 		//cout << endl << "leo caracter:" << (short)((unsigned char)S) << endl; 
 		//Si viene de entrada estándar y recibo \n corto.
@@ -67,7 +67,8 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 		}
 		indice = (dic.*busqueda)(P, S);
 		if( indice == NULO )
-		{
+		{	
+
 			// Si se elige el método de árbol, se agrega el simbolo en la busqueda.
 			if (busqueda !=  &diccionario::buscar_simbolo_arbol)
 				dic.agregar_simbolo(P, S);
