@@ -103,7 +103,7 @@ static void opt_output(string const &arg)
 	} 
 	else 
 	{
-		ofs.open(arg.c_str(), ios::out);
+		ofs.open(arg.c_str(), ios::out | ios::binary);
 		oss = &ofs;
 	}
 

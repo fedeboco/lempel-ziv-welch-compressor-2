@@ -260,8 +260,9 @@ void diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss)
     unsigned char aux_S;
     if (ubic <= 255)
     {
-        *oss << this -> obtener_S(ubic);
-    }
+	aux_S = this ->obtener_S(ubic);
+	(*oss).write(reinterpret_cast<char*>(&aux_S),sizeof(aux_S));
+   }
     else
     {
         aux_P = this -> obtener_P(ubic);
