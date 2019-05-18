@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 
 #define MAX_VECTOR 65536
 
@@ -24,6 +25,8 @@
 #define MSJ_DEFAULT_OP "Operación no especificada. Comprimiendo por defecto."
 #define MSJ_ERROR_OPENING "No se puede abrir "
 #define MSJ_ERROR_OPERATION "Invocación inválida."
+#define MSJ_COMP_TIME "Tiempo de compresión: "
+#define MSJ_DESCOMP_TIME "Tiempo de descompresión: "
 
 using namespace std;
 
@@ -100,7 +103,7 @@ static void opt_output(string const &arg)
 	} 
 	else 
 	{
-		ofs.open(arg.c_str(), ios::out);
+		ofs.open(arg.c_str(), ios::out | ios::binary);
 		oss = &ofs;
 	}
 
@@ -143,7 +146,7 @@ static void opt_method(string const &arg)
 	else if( arg == "normal" )
 		busqueda = &diccionario::buscar_simbolo_lineal;
 	else if( arg == "tree" )
-		cout << "no implementado todavia JE" << endl;
+		busqueda = &diccionario::buscar_simbolo_arbol;
 	else
 	{
 		cout << "Búsqueda normal seleccionada por defecto." << endl;
@@ -173,6 +176,8 @@ int main(int argc, char * const argv[])
 	//Descompresión.
 	if( descomprimir_archivo && !comprimir_archivo )
 	{
+		unsigned t0,t1;
+		t0=clock();
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
 		if( descomprimir(dic, iss, oss) )
@@ -180,12 +185,17 @@ int main(int argc, char * const argv[])
 			cout << MSJ_ERROR_DESCOMP << endl;
 			return 1;
 		}
+		t1 = clock();
+		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		cout << MSJ_OK_DESCOMP << endl;
+		cout << MSJ_DESCOMP_TIME << time << endl;
 	}
 
 	//Compresión.
 	else if( !descomprimir_archivo && comprimir_archivo )
 	{
+		unsigned t0,t1;
+		t0=clock();
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
 		if( comprimir(dic, iss, oss, busqueda) )
@@ -193,7 +203,10 @@ int main(int argc, char * const argv[])
 			cout << MSJ_ERROR_COMP << endl;
 			return 1;
 		}
+		t1 = clock();
+		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		cout << MSJ_OK_COMP << endl;
+		cout << MSJ_COMP_TIME << time << endl;
 	}
 
 	//Compresión y descompresión indefinido.

@@ -51,18 +51,33 @@ void diccionario::asignar_simbolo(const unsigned short pos, const unsigned short
     (*dic_)[pos].asignarS(S);
 }
 
-void diccionario::asignar_simbolo(  const unsigned short pos, 
-                                    const unsigned short & P, 
-                                    const char & S,
-                                    const unsigned short & L, 
-                                    const unsigned short & R)
+//Asigna simbolo dedicado al método de árbol
+void diccionario::asignar_simbolo(  const unsigned short pos, const unsigned short & P, const char & S, const unsigned short & L, const unsigned short & R, const unsigned short & PRI)
 {
     (*dic_)[pos].asignarP(P);
     (*dic_)[pos].asignarS(S);
     (*dic_)[pos].asignarL(L);
     (*dic_)[pos].asignarR(R);
+    (*dic_)[pos].asignarPRI(PRI);
 }
 
+//Asigna elemento a la posicion PRI en la posición pos
+void diccionario::asignar_PRI(const unsigned short & pos, const unsigned short & PRI)
+{
+    (*dic_)[pos].asignarPRI(PRI);
+}
+
+//Asigna L en la posición pos
+void diccionario::asignar_L(const unsigned short & pos, const unsigned short & L)
+{
+    (*dic_)[pos].asignarL(L);
+}
+
+//Asigna R en la posición pos
+void diccionario::asignar_R(const unsigned short & pos, const unsigned short & R)
+{
+    (*dic_)[pos].asignarR(R);
+}
 //Obtiene el prefijo de cierta posición del diccionario.
 unsigned short diccionario::obtener_P(const unsigned short pos) const
 {
@@ -93,6 +108,12 @@ unsigned short diccionario::obtener_ult_()
     return ult_;
 }
 
+//Obtiene el elemento "primero" de la posición pos
+unsigned short diccionario::obtener_pri(const unsigned short pos) const
+{
+    return (*dic_)[pos].obtenerPri();
+}
+
 //Vacía el diccionario.
 void diccionario::resetear_diccionario()
 {
@@ -109,15 +130,22 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
         this -> resetear_diccionario();
     }
     ult_++;
-    asignar_simbolo(ult_,P,S,NULO,obtener_L(P));
+    asignar_simbolo(ult_,P,S,NULO,obtener_L(P),NULO);
     (*dic_)[P].asignarL(ult_);
     return ult_;
 }
 
-//Selecciona el método de búsqueda con punteros a funciones
-const unsigned short diccionario::buscar_simbolo(const unsigned short & P, const char & S, ptr_busqueda busqueda)
+//Agrega simbolo dedicado al metodo de arbol
+unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char & S, const unsigned short & L, const unsigned short & R, const unsigned short & PRI)
 {
-    return (this->*busqueda)(P,S);
+    int size = *size_;
+    if( ult_ >= size - 2){
+        cout << MSJ_DIC_LLENO << endl;
+        this -> resetear_diccionario();
+    }
+    ult_++;
+    asignar_simbolo(ult_,P,S,L,R,PRI);
+    return ult_;
 }
 
 //Búsqueda del primer simbolo que coincida con el prefijo y el sufijo suministrado. Retorna índice.
@@ -132,16 +160,83 @@ const unsigned short diccionario::buscar_simbolo_lineal(const unsigned short & P
     return NULO;
 }
 
+//Busca simbolo armando una lista con dic[pos] = [P_, S_, primero=L_, siguiente=R_]
 const unsigned short diccionario::buscar_simbolo_lista(const unsigned short & P, const char & S)
 {
     unsigned short indice = NULO;
     if( P == NULO )
-        return NULO;// (unsigned short)S;
+        return NULO;
     indice = this -> obtener_L( P );
     while( indice != NULO && !( obtener_P( indice )==P && obtener_S( indice )==S ) )
         indice = obtener_R( indice );
     return indice;
 }
+
+//Busca simbolo armando un arbol binario de busqueda sin balancear
+const unsigned short diccionario::buscar_simbolo_arbol(const unsigned short & P, const char & S)
+{
+    char S_aux;
+    
+    if(P == NULO)
+        return NULO;
+
+    if (P > ult_)
+    {
+        agregar_simbolo(P,S,NULO,NULO,NULO);
+        return NULO;
+    }
+    else
+    {
+        if ( obtener_pri(P) == NULO)
+        {
+            agregar_simbolo(P,S,NULO,NULO,NULO);
+            asignar_PRI(P,ult_);
+            return NULO;        
+        }
+        else
+        {
+            unsigned short pos = obtener_pri(P);
+            S_aux = obtener_S(pos);
+            while(1)
+            {
+                if(S_aux == S){
+                    return pos;
+                    cout << pos << endl;
+                }
+                else if(S_aux < S)
+                {
+                    if(this -> obtener_L(pos) == NULO)
+                    {
+                        agregar_simbolo(P,S,NULO,NULO,NULO);
+                        asignar_L(pos,ult_);
+                        return NULO;
+                    }
+                    else
+                    {
+                        pos = obtener_L(pos);
+                        S_aux = obtener_S(pos);
+                    }                    
+                }
+                else
+                {
+                    if(this -> obtener_R(pos) == NULO)
+                    {
+                        agregar_simbolo(P,S,NULO,NULO,NULO);
+                        asignar_R(pos,ult_);
+                        return NULO;    
+                    }
+                    else
+                    {
+                        pos = obtener_R(pos);
+                        S_aux = obtener_S(pos);
+                    }
+                    
+                }
+                
+            }
+        }
+    }
+}   
 
 //Devuelve el primer caracter del diccionario de la ubicación buscada.
 unsigned short diccionario::obtener_indice(const unsigned short & ubic)
@@ -165,8 +260,9 @@ void diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss)
     unsigned char aux_S;
     if (ubic <= 255)
     {
-        *oss << this -> obtener_S(ubic);
-    }
+	aux_S = this ->obtener_S(ubic);
+	(*oss).write(reinterpret_cast<char*>(&aux_S),sizeof(aux_S));
+   }
     else
     {
         aux_P = this -> obtener_P(ubic);
@@ -181,7 +277,7 @@ void diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss)
 bool diccionario::cargar_ASCII()
 {
     for(int i=0; i<=255; i++)
-	    this -> asignar_simbolo(i,NULO,char(i),NULO,NULO);
+	    this -> asignar_simbolo(i,NULO,char(i),NULO,NULO,NULO);
     ult_ = 255;        
     return true;
 }

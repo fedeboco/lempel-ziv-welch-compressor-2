@@ -9,6 +9,7 @@ simbolo::simbolo()
     S_ = new char;
     L_ = new unsigned short;
     R_ = new unsigned short;
+    PRI_ = new unsigned short;
 }
 
 simbolo::simbolo(const unsigned short & P, const char & S)
@@ -41,6 +42,8 @@ simbolo::~simbolo()
         delete L_;
     if( R_ )
         delete R_;
+    if( PRI_ )
+        delete PRI_;    
 }
 
 //Asigna sólo el prefijo a la simbolo.
@@ -93,6 +96,11 @@ void simbolo::asignarLR(const unsigned short & L, const unsigned short & R)
     *R_ = R;
 }
 
+void simbolo::asignarPRI(const unsigned short &PRI)
+{
+    *PRI_ = PRI;
+}
+
 //Extrae el prefijo de la simbolo.
 unsigned short simbolo::obtenerL()
 {
@@ -103,4 +111,9 @@ unsigned short simbolo::obtenerL()
 unsigned short simbolo::obtenerR()
 {
     return *R_;
+}
+
+unsigned short simbolo::obtenerPri()
+{
+    return *PRI_;
 }
