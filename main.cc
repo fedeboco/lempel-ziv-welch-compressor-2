@@ -134,7 +134,7 @@ static void opt_process(string const &arg)
 	else
 	{
 		cout << MSJ_ERROR_OPERATION << endl;
-		cout << "Documentación: ./tp0.exe --help" << endl;
+		cout << "Documentación: ./tp1.exe --help" << endl;
 		exit(1);
 	}
 		
@@ -160,9 +160,9 @@ static void opt_help(string const &arg)
 {
 	cout << "\n<<<<COMPRESOR LZW V2>>>> Chapparro, Cuadrado, Pérez Boco.\n\n"
 		 << "COMPRIMIR: " 
-		 << "./tp0.exe -p compress [-i file] [-o file] \n"
+		 << "./tp1.exe -p compress [-i file] [-o file] \n"
 		 << "DESCOMPRIMIR: " 
-		 << "./tp0.exe -p decompress [-i file] [-o file] \n\n"
+		 << "./tp1.exe -p decompress [-i file] [-o file] \n\n"
 		 << "De no especificarse archivo de entrada o salida, utiliza la línea de comandos.\n"
 		 << "De no especificarse una operación, comprime por defecto."
 	     << endl << endl;
@@ -174,7 +174,6 @@ int main(int argc, char * const argv[])
 	cmdline cmdl(options);	// Objeto tipo option_t (struct) declarado globalmente.
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline.
 	estado_t estado;
-
 	//Descompresión.
 	if( descomprimir_archivo && !comprimir_archivo )
 	{
@@ -220,6 +219,8 @@ int main(int argc, char * const argv[])
 	//Por defecto.
 	else
 	{
+		unsigned t0,t1;
+		t0=clock();
 		cout << MSJ_DEFAULT_OP << endl;
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
@@ -228,7 +229,10 @@ int main(int argc, char * const argv[])
 			imprimir_error(estado);
 			return 1;
 		}
+		t1 = clock();
+		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		imprimir_mensaje(MSJ_ESTADO_OK_COMP);
+		cout << MSJ_COMP_TIME << time << endl;
 	}
 	ifs.close();
 	ofs.close();

@@ -11,9 +11,13 @@ using namespace std;
 arreglo::arreglo(const int & size)
 {
     if( size > 0 )
+    {
         dato_ = new simbolo[size];
+        size_ = size;
+    }
     else
         cout << ERROR_SIZE_CONSTRUCTOR << endl;
+
 }
 
 arreglo::~arreglo()

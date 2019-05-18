@@ -8,12 +8,14 @@ using namespace std;
 
 diccionario::diccionario(const int & size)
 {
+    int size_aux = size; 
     if (size < CANT_ASCII)
     {
-      cout << MSJ_ERROR_SIZE_DICC << endl;
-      dic_ = new arreglo(CANT_ASCII);
+      imprimir_error(ERROR_SIZE_DIC);
+      size_aux = CANT_ASCII;  
     }  
-    
+    dic_ = new arreglo(size_aux);
+    size_ = size_aux;
 }
 
 diccionario::~diccionario()
@@ -240,7 +242,7 @@ const unsigned short diccionario::buscar_simbolo_arbol(const unsigned short & P,
 //Devuelve el primer caracter del diccionario de la ubicación buscada.
 unsigned short diccionario::obtener_indice(const unsigned short & ubic)
 {
-    if (ubic < 256)
+    if (ubic < CANT_ASCII)
         return ubic;
     else
     {

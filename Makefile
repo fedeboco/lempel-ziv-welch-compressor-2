@@ -3,8 +3,8 @@ CXXFLAGS = -I. $(CXXARGS)
 
 all: tp1.exe
 
-tp1.exe: main.cc cmdline.cc diccionario.cc arreglo.cc simbolo.cc compresion.cc funciones_impresion.cc funciones_impresion.h compresion.h  diccionario.h arreglo.h simbolo.h cmdline.h tipos_datos.h
-	$(CXX) $(CXXFLAGS) -o tp0.exe cmdline.cc main.cc diccionario.cc arreglo.cc simbolo.cc compresion.cc funciones_impresion.cc
+tp1.exe: main.cc cmdline.cc diccionario.cc arreglo.cc simbolo.cc compresion.cc funciones_impresion.cc funciones_impresion.h compresion.h diccionario.h arreglo.h simbolo.h cmdline.h tipos_datos.h
+	$(CXX) $(CXXFLAGS) -o tp1.exe cmdline.cc main.cc diccionario.cc arreglo.cc simbolo.cc compresion.cc funciones_impresion.cc
 
 clean:
 	$(RM) -vf *.o *.exe *.t *.out *.err

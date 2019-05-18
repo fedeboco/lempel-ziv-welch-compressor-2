@@ -13,12 +13,11 @@ using namespace std;
 //Comprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
 estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busqueda)
 {
-    char S;
+	char S;
 	unsigned short P = NULO;
 	unsigned short indice = NULO;
 	// estado_f es una variable para corroborar la candición de error al leer un caracter.
 	bool estado_f; 
-
 	dic.resetear_diccionario();
 	//Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
 	(*iss).read(&S,sizeof(char));
@@ -69,11 +68,11 @@ estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda 
 		imprimir_mensaje(MSJ_ESTADO_ARCHIVO_VACIO);
 		return OK;
 	}
-
 	//Desde el tercer caracter hasta el final.	
 	(*iss).read(&S,sizeof(char));
 	while( (*iss).eof() == false && (estado_f = (*iss).fail()) == false )
 	{	
+		
 		//cout << endl << "leo caracter:" << (short)((unsigned char)S) << endl; 
 		//Si viene de entrada estándar y recibo \n corto.
 		if( S == '\n' && iss == &cin )
@@ -113,8 +112,7 @@ estado_t descomprimir(diccionario & dic, istream * iss, ostream *oss)
 	bool Pr_carac_flag = false;     
 	unsigned short indice_anterior=0, indice_actual = 0;
 	// estado_f es una variable para corroborar la candición de error al leer un caracter.
-	bool estado_f;
-
+	bool estado_f = false;
 	// Para primer caracter
 	(*iss).read(reinterpret_cast<char*>(&indice_actual),sizeof(unsigned short));
 	if ( (*iss).eof() == true && (estado_f = (*iss).fail()) == false )
@@ -164,11 +162,11 @@ estado_t descomprimir(diccionario & dic, istream * iss, ostream *oss)
 		if( indice_actual == '\n' && iss == &cin )
 			return OK;
 
-	indice_anterior = indice_actual;
+		indice_anterior = indice_actual;
 	
-	(*iss).read(reinterpret_cast<char*>(&indice_actual),sizeof(unsigned short));
-	if( (estado_f = (*iss).fail()) == false )
-		return ERROR_LECTURA_ARCHIVO;
+		(*iss).read(reinterpret_cast<char*>(&indice_actual),sizeof(unsigned short));
+		if( (estado_f = (*iss).fail()) == true && (*iss).eof() != true )
+			return ERROR_LECTURA_ARCHIVO;
     }
 
     return OK;
