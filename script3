@@ -1,0 +1,17 @@
+#imprime n a minusculas y toma los tiempos
+
+rm -f tiempos.csv;
+touch tiempos.csv;
+echo n, t_compresion, t_descompresion > tiempos.csv || break;
+echo -------------------------------- >> tiempos.csv || break;
+n=1; while :; do
+      n="`expr $n + 1`"; 
+      echo -n $n >> tiempos.csv;
+      echo -n ", " >> tiempos.csv;
+      head -c 16 < /dev/zero | tr '\0' '\141' >/tmp/test.$n.u;
+      ./tp1.exe  -m list -i /tmp/test.$n.u -o /tmp/test.$n.d || break;
+      ./tp1.exe -p decompress -i /tmp/test.$n.d  -o /tmp/test.$n.2.u || break;
+      diff -q /tmp/test.$n.u /tmp/test.$n.2.u || break;
+      rm -f /tmp/test.$n.*;
+      echo Ok: $n;
+done; echo Error: $n

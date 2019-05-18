@@ -174,6 +174,11 @@ int main(int argc, char * const argv[])
 	cmdline cmdl(options);	// Objeto tipo option_t (struct) declarado globalmente.
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline.
 	estado_t estado;
+	fstream tfs;
+	ostream * tiempos_fs;
+	tfs.open("tiempos.csv", fstream::app | fstream::out);
+	tiempos_fs = &tfs;
+
 	//Descompresión.
 	if( descomprimir_archivo && !comprimir_archivo )
 	{
@@ -190,6 +195,7 @@ int main(int argc, char * const argv[])
 		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		imprimir_mensaje(MSJ_ESTADO_OK_DESCOMP);
 		cout << MSJ_DESCOMP_TIME << time << endl;
+		(*tiempos_fs) << time << endl;
 	}
 
 	//Compresión.
@@ -208,6 +214,7 @@ int main(int argc, char * const argv[])
 		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		imprimir_mensaje(MSJ_ESTADO_OK_COMP);
 		cout << MSJ_COMP_TIME << time << endl;
+		(*tiempos_fs) << time << ", ";
 	}
 
 	//Compresión y descompresión indefinido.
@@ -232,7 +239,9 @@ int main(int argc, char * const argv[])
 		t1 = clock();
 		double time (double(t1-t0)/CLOCKS_PER_SEC);
 		imprimir_mensaje(MSJ_ESTADO_OK_COMP);
+		(*tiempos_fs) << time << ", ";
 		cout << MSJ_COMP_TIME << time << endl;
+
 	}
 	ifs.close();
 	ofs.close();
