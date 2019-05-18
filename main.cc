@@ -14,6 +14,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include "tipos_datos.h"
+#include "funciones_impresion.h"
 
 #define MAX_VECTOR 65536
 
@@ -171,7 +173,7 @@ int main(int argc, char * const argv[])
 {
 	cmdline cmdl(options);	// Objeto tipo option_t (struct) declarado globalmente.
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline.
-
+	estado_t estado;
 
 	//Descompresión.
 	if( descomprimir_archivo && !comprimir_archivo )
@@ -180,14 +182,14 @@ int main(int argc, char * const argv[])
 		t0=clock();
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
-		if( descomprimir(dic, iss, oss) )
+		if( (estado=descomprimir(dic, iss, oss)) != OK )
 		{
-			cout << MSJ_ERROR_DESCOMP << endl;
+			imprimir_error(estado);
 			return 1;
 		}
 		t1 = clock();
 		double time (double(t1-t0)/CLOCKS_PER_SEC);
-		cout << MSJ_OK_DESCOMP << endl;
+		imprimir_mensaje(MSJ_ESTADO_OK_DESCOMP);
 		cout << MSJ_DESCOMP_TIME << time << endl;
 	}
 
@@ -198,14 +200,14 @@ int main(int argc, char * const argv[])
 		t0=clock();
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
-		if( comprimir(dic, iss, oss, busqueda) )
+		if( (estado=comprimir(dic, iss, oss,busqueda))!= OK )
 		{
-			cout << MSJ_ERROR_COMP << endl;
+			imprimir_error(estado);
 			return 1;
 		}
 		t1 = clock();
 		double time (double(t1-t0)/CLOCKS_PER_SEC);
-		cout << MSJ_OK_COMP << endl;
+		imprimir_mensaje(MSJ_ESTADO_OK_COMP);
 		cout << MSJ_COMP_TIME << time << endl;
 	}
 
@@ -221,12 +223,12 @@ int main(int argc, char * const argv[])
 		cout << MSJ_DEFAULT_OP << endl;
 		diccionario dic(MAX_VECTOR);
 		dic.cargar_ASCII();
-		if( comprimir(dic, iss, oss, busqueda) )
+		if( (estado=comprimir(dic, iss, oss,busqueda))!= OK )
 		{
-			cout << MSJ_ERROR_COMP << endl;
+			imprimir_error(estado);
 			return 1;
 		}
-		cout << MSJ_OK_COMP << endl;
+		imprimir_mensaje(MSJ_ESTADO_OK_COMP);
 	}
 	ifs.close();
 	ofs.close();

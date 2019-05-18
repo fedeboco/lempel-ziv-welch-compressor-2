@@ -1,5 +1,7 @@
 #include <iostream>
 #include "compresion.h"
+#include "tipos_datos.h"
+#include "funciones_impresion.h"
 
 #define NULO 65535
 
@@ -9,11 +11,12 @@ using namespace std;
 #define MSJ_ARCHIVO_VACIO "El archivo a tratar está vacío."
 
 //Comprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
-bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busqueda)
+estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busqueda)
 {
     char S;
 	unsigned short P = NULO;
 	unsigned short indice = NULO;
+	bool estado_f; 
 
 	dic.resetear_diccionario();
 	//Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
@@ -22,7 +25,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 	
 		//Si viene de entrada estándar y recibo \n corto.
 		if( S == '\n' && iss == &cin )
-			return false;
+			return OK;
 
 		P = (unsigned char)S;
 		(*iss).read(&S,sizeof(char));
@@ -33,7 +36,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 			if( S == '\n' && iss == &cin )
 			{
 				(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
-				return false;
+				return OK;
 			}
 			if (busqueda !=  &diccionario::buscar_simbolo_arbol)
 				dic.agregar_simbolo(P, S);
@@ -47,7 +50,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 		else
 		{
 			(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short)); 
-			return false;
+			return OK;
 		}
 		
 	}
@@ -55,7 +58,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 	else
 	{
 		cout << MSJ_ARCHIVO_VACIO << endl;
-		return false;
+		return OK;
 	}
 
 	//Desde el tercer caracter hasta el final.	
@@ -67,7 +70,7 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 		if( S == '\n' && iss == &cin )
 		{
 			(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
-			return false;
+			return OK;
 		}
 		indice = (dic.*busqueda)(P, S);
 		if( indice == NULO )
@@ -84,11 +87,11 @@ bool comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda busq
 		(*iss).read(&S,sizeof(char));
 	}
 	(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
-	return false;
+	return OK;
 }
 
 //Descomprime un archivo en modo texto de iss en otro archivo oss según Lempel-ziv-Welch.
-bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
+estado_t descomprimir(diccionario & dic, istream * iss, ostream *oss)
 {  
 	char S;
 	unsigned short aux_u;
@@ -102,7 +105,7 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 		if( Pr_carac_flag == false )
 		{
 			cout << MSJ_ARCHIVO_VACIO << endl;
-			return false;
+			return OK;
 		}
 	}
 
@@ -113,7 +116,7 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 
 	//Si viene de entrada estándar y recibo \n corto.
 	if(indice_actual == '\n'  && iss == &cin)
-		return false;
+		return OK;
 
 	//Del segundo caracter hasta el final.
 
@@ -141,7 +144,7 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 
 		//Si viene de entrada estándar y recibo \n corto.
 		if( indice_actual == '\n' && iss == &cin )
-			return false;
+			return OK;
 
 	indice_anterior = indice_actual;
 	
@@ -149,5 +152,5 @@ bool descomprimir(diccionario & dic, istream * iss, ostream *oss)
 	
     }
 
-    return false;
+    return OK;
 }
