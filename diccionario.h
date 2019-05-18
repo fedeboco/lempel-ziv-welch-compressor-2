@@ -1,6 +1,7 @@
 #include <iostream>
 #include "arreglo.h"
 #include "simbolo.h"
+#include "tipos_datos.h"
 using namespace std;
 
 #ifndef DICCIONARIO_DEF
@@ -26,9 +27,9 @@ public:
     const unsigned short buscar_simbolo_arbol(const unsigned short & , const char & );
     unsigned short agregar_simbolo(const unsigned short &, const char &);
     unsigned short agregar_simbolo(const unsigned short & , const char & , const unsigned short & , const unsigned short & , const unsigned short & ); //Sobrecargo esta función, la idea es fucionarla con la de arriba
-    void asignar_simbolo(const unsigned short, const simbolo &);
-    void asignar_simbolo(const unsigned short, const unsigned short &, const char &);
-    void asignar_simbolo(const unsigned short, const unsigned short &, const char &, const unsigned short &, const unsigned short &, const unsigned short &); //sobrecargo esta función, la idea es fcionarla con la dearriba                        
+    estado_t asignar_simbolo(const unsigned short, const simbolo &);
+    estado_t asignar_simbolo(const unsigned short, const unsigned short &, const char &);
+    estado_t asignar_simbolo(const unsigned short, const unsigned short &, const char &, const unsigned short &, const unsigned short &, const unsigned short &); //sobrecargo esta función, la idea es fcionarla con la dearriba                        
     void asignar_PRI(const unsigned short &, const unsigned short & );
     void asignar_L(const unsigned short &, const unsigned short & );
     void asignar_R(const unsigned short &, const unsigned short & );
@@ -40,7 +41,7 @@ public:
     unsigned short obtener_pri(const unsigned short) const;
     void resetear_diccionario();
     unsigned short obtener_indice(const unsigned short &);
-    void imprimir_indice (const unsigned short &, ostream *);
+    estado_t imprimir_indice (const unsigned short &, ostream *);
     bool cargar_ASCII();
 
 };

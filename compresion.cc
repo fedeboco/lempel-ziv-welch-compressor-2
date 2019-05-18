@@ -117,38 +117,38 @@ estado_t descomprimir(diccionario & dic, istream * iss, ostream *oss)
 
 	// Para primer caracter
 	(*iss).read(reinterpret_cast<char*>(&indice_actual),sizeof(unsigned short));
-	if ( (*iss).eof() == true )
+	if ( (*iss).eof() == true && (estado_f = (*iss).fail()) == false )
 	{
 		if( Pr_carac_flag == false )
 		{
-			cout << MSJ_ARCHIVO_VACIO << endl;
+			imprimir_mensaje(MSJ_ESTADO_ARCHIVO_VACIO);
 			return OK;
 		}
 	}
+	if ( estado_f == true )
+		return ERROR_LECTURA_ARCHIVO;
 
 	Pr_carac_flag = true;
-
 	S = dic.obtener_S(indice_actual);
 	(*oss).write(&S,sizeof(S));
+	if((*oss).fail())
+		return ERROR_ESCRITURA;
 
 	//Si viene de entrada estándar y recibo \n corto.
 	if(indice_actual == '\n'  && iss == &cin)
 		return OK;
 
 	//Del segundo caracter hasta el final.
-
 	indice_anterior = indice_actual;
-
 	(*iss).read(reinterpret_cast<char*>(&indice_actual),sizeof(unsigned short));
-
-    while ( (*iss).eof() == false )        
+    while ( (*iss).eof() == false && (estado_f = (*iss).fail()) == false )        
     {
 
 	//Uso la posición de indice_actual para saber si esta o no en el diccionario
         if(indice_actual <= dic.obtener_ult_())
-		{
-		   	//ubic = indice_actual;                                    
-            dic.imprimir_indice(indice_actual, oss);
+		{                               
+            if(dic.imprimir_indice(indice_actual, oss) != OK)
+				return ERROR_ESCRITURA;
             aux_u = dic.obtener_indice(indice_actual);            
 			dic.agregar_simbolo(indice_anterior,aux_u);
 		}
@@ -156,7 +156,8 @@ estado_t descomprimir(diccionario & dic, istream * iss, ostream *oss)
         {
             aux_u = dic.obtener_indice(indice_anterior);  
 			dic.agregar_simbolo(indice_anterior,aux_u);
-            dic.imprimir_indice(dic.obtener_ult_(), oss);
+            if(dic.imprimir_indice(dic.obtener_ult_(), oss) != OK)
+				return ERROR_ESCRITURA;
         }
 
 		//Si viene de entrada estándar y recibo \n corto.
@@ -166,7 +167,8 @@ estado_t descomprimir(diccionario & dic, istream * iss, ostream *oss)
 	indice_anterior = indice_actual;
 	
 	(*iss).read(reinterpret_cast<char*>(&indice_actual),sizeof(unsigned short));
-	
+	if( (estado_f = (*iss).fail()) == false )
+		return ERROR_LECTURA_ARCHIVO;
     }
 
     return OK;

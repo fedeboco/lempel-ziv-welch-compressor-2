@@ -1,21 +1,18 @@
 #include <iostream>
 #include "diccionario.h"
+#include "tipos_datos.h"
+#include "funciones_impresion.h"
 
-#define MIN_SIZE 255
-#define NULO 65535
-#define MSJ_ERROR_SIZE_DICC "El tamaño del diccionario es muy chico, se usará el default = 255"
-#define MSJ_ERROR_OBT_SEC "No existen simbolos con índice negativo o índice mayor al último elemento."
-#define MSJ_DIC_LLENO "Se lleno el diccionario, se procede a resetearlo"
 
 using namespace std;
 
 diccionario::diccionario(const int & size)
 {
     int size_aux = size; 
-    if (size < MIN_SIZE)
+    if (size < CANT_ASCII)
     {
       cout << MSJ_ERROR_SIZE_DICC << endl;
-      size_aux = MIN_SIZE;  
+      size_aux = CANT_ASCII;  
     }  
     dic_ = new arreglo(size_aux);
     size_ = new int;
@@ -39,26 +36,35 @@ simbolo & diccionario::obtener_simbolo(const unsigned short i)
 }
 
 //Copia un simbolo del tipo [ushort Prefijo, char Sufijo] a una posición del diccionario.
-void diccionario::asignar_simbolo(const unsigned short pos, const simbolo & dato)
+estado_t diccionario::asignar_simbolo(const unsigned short pos, const simbolo & dato)
 {
+    if( pos < 0 || pos > MAX_VECTOR - 1 )
+        return ERROR_ASIGNAR_SEC;
     (*dic_)[pos] = dato;
+    return OK;
 }
 
 //Asigna un ushort P (Prefijo) y un char S (Sufijo) a un simbolo de cierta posición del diccionario.
-void diccionario::asignar_simbolo(const unsigned short pos, const unsigned short & P, const char & S)
+estado_t diccionario::asignar_simbolo(const unsigned short pos, const unsigned short & P, const char & S)
 {
+    if( pos < 0 || pos > MAX_VECTOR - 1 )
+        return ERROR_ASIGNAR_SEC;
     (*dic_)[pos].asignarP(P);
     (*dic_)[pos].asignarS(S);
+    return OK;
 }
 
 //Asigna simbolo dedicado al método de árbol
-void diccionario::asignar_simbolo(  const unsigned short pos, const unsigned short & P, const char & S, const unsigned short & L, const unsigned short & R, const unsigned short & PRI)
+estado_t diccionario::asignar_simbolo(  const unsigned short pos, const unsigned short & P, const char & S, const unsigned short & L, const unsigned short & R, const unsigned short & PRI)
 {
+    if( pos < 0 || pos > MAX_VECTOR - 1 )
+        return ERROR_ASIGNAR_SEC;
     (*dic_)[pos].asignarP(P);
     (*dic_)[pos].asignarS(S);
     (*dic_)[pos].asignarL(L);
     (*dic_)[pos].asignarR(R);
     (*dic_)[pos].asignarPRI(PRI);
+    return OK;
 }
 
 //Asigna elemento a la posicion PRI en la posición pos
@@ -140,7 +146,7 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
 {
     int size = *size_;
     if( ult_ >= size - 2){
-        cout << MSJ_DIC_LLENO << endl;
+        imprimir_mensaje(MSJ_ESTADO_DIC_LLENO);
         this -> resetear_diccionario();
     }
     ult_++;
@@ -253,7 +259,7 @@ unsigned short diccionario::obtener_indice(const unsigned short & ubic)
 }
 
 //Imprime cadena de caracteres según indice.
-void diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss)
+estado_t diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss)
 {
     unsigned short aux_P;
     //Como el S es char va del -127 al 127 por ende del 128 al 255 los toma como negativos.
@@ -262,7 +268,9 @@ void diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss)
     {
 	aux_S = this ->obtener_S(ubic);
 	(*oss).write(reinterpret_cast<char*>(&aux_S),sizeof(aux_S));
-   }
+    if((*oss).fail())
+		return ERROR_ESCRITURA;
+    }
     else
     {
         aux_P = this -> obtener_P(ubic);
@@ -270,7 +278,7 @@ void diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss)
         this -> imprimir_indice (aux_P, oss);
         this -> imprimir_indice (aux_S, oss);
     }
-        
+    return OK;    
 }
 
 //Carga tabla ASCII extendida desde 0 hasta 255.

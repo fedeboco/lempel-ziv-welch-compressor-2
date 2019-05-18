@@ -6,6 +6,7 @@
 #define MSJ_ERROR_SIZE_DICC "El tamaño del diccionario es muy chico, se usará el default = 255"
 #define MSJ_ERROR_OBT_SEC "No existen secuencias con índice negativo o índice mayor al último elemento."
 #define MSJ_DIC_LLENO "Se lleno el diccionario, se procede a resetearlo"
+#define NULO 65535
 
 //********************************************** Arreglo.cc *********************************************
 #define MSJ_ERROR_SIZE_1 "Error: acceso inválido a posición "
