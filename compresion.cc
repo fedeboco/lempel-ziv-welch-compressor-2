@@ -16,12 +16,13 @@ estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda 
     char S;
 	unsigned short P = NULO;
 	unsigned short indice = NULO;
+	// estado_f es una variable para corroborar la candición de error al leer un caracter.
 	bool estado_f; 
 
 	dic.resetear_diccionario();
 	//Para primeros 2 carácteres. El primero lo va a encontrar. El segundo no.
 	(*iss).read(&S,sizeof(char));
-	if( (*iss).eof() == false ){
+	if( (*iss).eof() == false && (estado_f = (*iss).fail()) == false){
 	
 		//Si viene de entrada estándar y recibo \n corto.
 		if( S == '\n' && iss == &cin )
@@ -29,13 +30,15 @@ estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda 
 
 		P = (unsigned char)S;
 		(*iss).read(&S,sizeof(char));
-		if((*iss).eof() == false ){
+		if((*iss).eof() == false && (estado_f = (*iss).fail()) == false ){
 
 
 			//Si viene de entrada estándar y recibo \n corto.
 			if( S == '\n' && iss == &cin )
 			{
 				(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
+				if((*oss).fail())
+					return ERROR_ESCRITURA;
 				return OK;
 			}
 			if (busqueda !=  &diccionario::buscar_simbolo_arbol)
@@ -43,6 +46,8 @@ estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda 
 			else
 				(dic.*busqueda)(P, S); /*si es arbol, agrego en busqueda*/
 			(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
+			if((*oss).fail())
+				return ERROR_ESCRITURA;
 			P = (unsigned char)S;
 
 		}
@@ -50,26 +55,32 @@ estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda 
 		else
 		{
 			(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short)); 
+			if((*oss).fail())
+				return ERROR_ESCRITURA;
 			return OK;
 		}
 		
 	}
+	else if (estado_f == true)
+		return ERROR_LECTURA_ARCHIVO;
 	//Archivo de entrada vacío.
 	else
 	{
-		cout << MSJ_ARCHIVO_VACIO << endl;
+		imprimir_mensaje(MSJ_ESTADO_ARCHIVO_VACIO);
 		return OK;
 	}
 
 	//Desde el tercer caracter hasta el final.	
 	(*iss).read(&S,sizeof(char));
-	while( (*iss).eof() == false )
+	while( (*iss).eof() == false && (estado_f = (*iss).fail()) == false )
 	{	
 		//cout << endl << "leo caracter:" << (short)((unsigned char)S) << endl; 
 		//Si viene de entrada estándar y recibo \n corto.
 		if( S == '\n' && iss == &cin )
 		{
 			(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
+			if((*oss).fail())
+				return ERROR_ESCRITURA;
 			return OK;
 		}
 		indice = (dic.*busqueda)(P, S);
@@ -80,6 +91,8 @@ estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda 
 			if (busqueda !=  &diccionario::buscar_simbolo_arbol)
 				dic.agregar_simbolo(P, S);
 			(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
+			if((*oss).fail())
+				return ERROR_ESCRITURA;
 			indice = (unsigned char)S;
 		}
 
@@ -87,6 +100,8 @@ estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda 
 		(*iss).read(&S,sizeof(char));
 	}
 	(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
+	if((*oss).fail())
+		return ERROR_ESCRITURA;
 	return OK;
 }
 
@@ -97,6 +112,8 @@ estado_t descomprimir(diccionario & dic, istream * iss, ostream *oss)
 	unsigned short aux_u;
 	bool Pr_carac_flag = false;     
 	unsigned short indice_anterior=0, indice_actual = 0;
+	// estado_f es una variable para corroborar la candición de error al leer un caracter.
+	bool estado_f;
 
 	// Para primer caracter
 	(*iss).read(reinterpret_cast<char*>(&indice_actual),sizeof(unsigned short));
