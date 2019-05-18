@@ -11,11 +11,7 @@ using namespace std;
 arreglo::arreglo(const int & size)
 {
     if( size > 0 )
-    {
         dato_ = new simbolo[size];
-        size_ = new int;
-        *size_ = size;
-    }
     else
         cout << ERROR_SIZE_CONSTRUCTOR << endl;
 }
@@ -24,18 +20,16 @@ arreglo::~arreglo()
 {
     if( dato_ )
         delete[] dato_;
-    if( size_ )
-        delete size_;
 }
 
 simbolo & arreglo::operator[](const unsigned short pos)
 {
-    if( pos >= *size_ || pos < 0 )
+    if( pos >= size_ || pos < 0 )
     {
         cout    << ERROR_SIZE_1 
                 << pos 
                 << ERROR_SIZE_2 
-                << *size_ 
+                << size_ 
                 << '.' 
                 << endl;
     }
@@ -44,12 +38,12 @@ simbolo & arreglo::operator[](const unsigned short pos)
 
 simbolo & arreglo::obtener_dato(const unsigned short pos)
 {
-    if( pos >= *size_ || pos < 0 )
+    if( pos >= size_ || pos < 0 )
     {
         cout    << ERROR_SIZE_1 
                 << pos 
                 << ERROR_SIZE_2 
-                << *size_ 
+                << size_ 
                 << '.' 
                 << endl;
     }
@@ -58,6 +52,6 @@ simbolo & arreglo::obtener_dato(const unsigned short pos)
 
 int arreglo::obtener_size() const
 {
-    return *size_;
+    return size_;
 }
 

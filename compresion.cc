@@ -92,7 +92,7 @@ estado_t comprimir(diccionario & dic, istream * iss, ostream *oss, ptr_busqueda 
 				dic.agregar_simbolo(P, S);
 			(*oss).write(reinterpret_cast<char*>(&P),sizeof(unsigned short));
 			if((*oss).fail())
-				return ERROR_ESCRITURA;
+				return ERROR_ESCRITURA;		
 			indice = (unsigned char)S;
 		}
 

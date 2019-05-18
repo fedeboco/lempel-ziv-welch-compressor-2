@@ -7,16 +7,15 @@ using namespace std;
 class simbolo
 {
 private:
-    unsigned short * P_; //prefijo
-    char * S_; //sufijo
-    unsigned short * L_; //primero o izquierda
-    unsigned short * R_; //siguiente o derecha
-    unsigned short *PRI_;
+    unsigned short P_; //prefijo
+    char S_; //sufijo
+    unsigned short L_; //primero o izquierda
+    unsigned short R_; //siguiente o derecha
+    unsigned short PRI_;
 
 public:
     simbolo();
     simbolo(const unsigned short &, const char &);
-    ~simbolo();
 
     void operator=(const simbolo &);
     void asignarP(const unsigned short &);

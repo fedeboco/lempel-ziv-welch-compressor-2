@@ -8,23 +8,18 @@ using namespace std;
 
 diccionario::diccionario(const int & size)
 {
-    int size_aux = size; 
     if (size < CANT_ASCII)
     {
       cout << MSJ_ERROR_SIZE_DICC << endl;
-      size_aux = CANT_ASCII;  
+      dic_ = new arreglo(CANT_ASCII);
     }  
-    dic_ = new arreglo(size_aux);
-    size_ = new int;
-    *size_ = size_aux;
+    
 }
 
 diccionario::~diccionario()
 {
     if( dic_ )
         delete dic_;
-    if( size_ )
-        delete size_;
 }
 
 //Obtiene un simbolo del diccionario de tipo [ushort Prefijo, char Sufijo] y la retorna.
@@ -124,13 +119,13 @@ unsigned short diccionario::obtener_pri(const unsigned short pos) const
 void diccionario::resetear_diccionario()
 {
     this -> cargar_ASCII();
-    ult_ = 255;
+    ult_ = CANT_ASCII;
 }
 
 //Asigna un ushort P (Prefijo) y un char S (Sufijo) al simbolo de la primera posición vacía del diccionario.
 unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char & S)
 {
-    int size = *size_;
+    int size = size_;
     if( ult_ >= size - 2){
         cout << MSJ_DIC_LLENO << endl;
         this -> resetear_diccionario();
@@ -144,8 +139,7 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
 //Agrega simbolo dedicado al metodo de arbol
 unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char & S, const unsigned short & L, const unsigned short & R, const unsigned short & PRI)
 {
-    int size = *size_;
-    if( ult_ >= size - 2){
+    if( ult_ >= size_ - 2){
         imprimir_mensaje(MSJ_ESTADO_DIC_LLENO);
         this -> resetear_diccionario();
     }
@@ -157,8 +151,7 @@ unsigned short diccionario::agregar_simbolo(const unsigned short & P, const char
 //Búsqueda del primer simbolo que coincida con el prefijo y el sufijo suministrado. Retorna índice.
 const unsigned short diccionario::buscar_simbolo_lineal(const unsigned short & P, const char & S)
 {
-    int size = *size_;
-    for( int i = 0; i >= 0 && i <= size && i <= ult_; i++ )
+    for( int i = 0; i >= 0 && i <= size_ && i <= ult_; i++ )
     {
         if( this->obtener_P(i) == P && this->obtener_S(i) == S )
             return i;
@@ -264,7 +257,7 @@ estado_t diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss
     unsigned short aux_P;
     //Como el S es char va del -127 al 127 por ende del 128 al 255 los toma como negativos.
     unsigned char aux_S;
-    if (ubic <= 255)
+    if (ubic <= CANT_ASCII)
     {
 	aux_S = this ->obtener_S(ubic);
 	(*oss).write(reinterpret_cast<char*>(&aux_S),sizeof(aux_S));
@@ -284,8 +277,8 @@ estado_t diccionario::imprimir_indice(const unsigned short & ubic, ostream * oss
 //Carga tabla ASCII extendida desde 0 hasta 255.
 bool diccionario::cargar_ASCII()
 {
-    for(int i=0; i<=255; i++)
+    for(int i=0; i<=CANT_ASCII; i++)
 	    this -> asignar_simbolo(i,NULO,char(i),NULO,NULO,NULO);
-    ult_ = 255;        
+    ult_ = CANT_ASCII;        
     return true;
 }

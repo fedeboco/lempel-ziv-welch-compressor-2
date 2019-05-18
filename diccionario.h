@@ -15,7 +15,7 @@ class diccionario
 {
 private:
     arreglo * dic_;
-    int * size_;                               
+    int size_;                               
     unsigned short ult_;
 
 public:
