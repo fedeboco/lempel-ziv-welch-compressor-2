@@ -242,7 +242,7 @@ const unsigned short diccionario::buscar_simbolo_arbol(const unsigned short & P,
 //Devuelve el primer caracter del diccionario de la ubicación buscada.
 unsigned short diccionario::obtener_indice(const unsigned short & ubic)
 {
-    if (ubic < CANT_ASCII)
+    if (ubic < CANT_ASCII + 1)
         return ubic;
     else
     {
